@@ -1,0 +1,68 @@
+{
+  "name": "angie-log",
+  "version": "0.0.1",
+  "author": "Joe Groseclose <@benderTheCrime>",
+  "description": "CLI and System Logger for the Angie MVC",
+  "license": "MIT",
+  "main": "src/index.js",
+  "private": false,
+  "preferGlobal": true,
+  "scripts": {
+    "start": "angie-log",
+    "test": "gulp",
+    "publish": "gulp"
+  },
+  "engines": {
+    "iojs": "*",
+    "babel-node": "*",
+    "node": "*"
+  },
+  "bin": {
+    "angie": "bin/angie-orm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benderTheCrime/angie-orm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benderTheCrime/angie-orm.git/issues"
+  },
+  "keywords": [
+    "Angie",
+    "JavaScript",
+    "REST",
+    "MVC",
+    "Framework",
+    "API",
+    "Logging"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benderTheCrime/angie-log.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benderTheCrime/angie-log.git/issues"
+  },
+  "devDependencies": {
+    "babel-eslint": "3.1.17",
+    "chai": "2.3.0",
+    "connect": "2.x.x",
+    "esdoc": "0.1.2",
+    "gulp": "3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-cli": "0.2.0",
+    "gulp-eslint": "0.12.0",
+    "gulp-istanbul": "0.9.0",
+    "gulp-jscs": "1.6.0",
+    "gulp-mocha": "2.0.1",
+    "isparta": "3.0.3",
+    "istanbul-cobertura-badger": "0.0.4",
+    "mocha": "2.2.4",
+    "simple-mock": "0.3.0",
+    "yargs": "3.8.0"
+  },
+  "dependencies": {
+    "babel": "5.6.4",
+    "chalk": "1.0.0"
+  }
+}
