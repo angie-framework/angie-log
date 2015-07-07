@@ -4,9 +4,6 @@
 import fs from      'fs';
 import chalk from   'chalk';
 
-// Angie Log Modules
-import Util from    '../util/Util';
-
 const p = process,
       bold = chalk.bold,
       LOG_LEVELS = {
@@ -14,7 +11,11 @@ const p = process,
           warn: 'WARN',
           debug: 'DEBUG',
           info: 'INFO'
-      };
+      },
+      DEFAULT_LOG_FILE = `${p.cwd()}/angie.log`;
+
+// Message Array to watch and log
+let messages = [];
 
 /**
  * @desc $LogProvider is the only class in the Angie Logging module. This module
@@ -32,11 +33,15 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string|object} outfile The file to which messages are logged, or
      * a hash of options to pass the logger
-     * @param {string} outfile.outfile [param='./angie.log'] The file to which
-     * messages are logged
+     * @param {string} outfile.outfile [param=p.cwd() + '/angie.log'] The file
+     * to which messages are logged
+     * @param {string} outfile.file [param=p.cwd() + '/angie.log'] The file to
+     * which messages are logged
      * @param {boolean} outfile.timestamp [param=true] Whether or not to include
      * a timestamp in the log output
      * @param {string} outfile.level [param='DEBUG'] The recorded log message
+     * level. Possible options: debug, error, info, warn
+     * @param {string} outfile.logLevel [param='DEBUG'] The recorded log message
      * level. Possible options: debug, error, info, warn
      * @param {boolean} outfile.silent [param=false] The recorded log message
      * level. Possible options: debug, error, info, warn
@@ -50,7 +55,7 @@ class $LogProvider {
      * @example new $LogProvider(output.log, true, 'DEBUG', false);
      */
     constructor(
-        outfile = `${p.cwd()}angie.log`,
+        outfile = DEFAULT_LOG_FILE,
         timestamp = true,
         level = 'DEBUG',
         silent = false
@@ -59,10 +64,15 @@ class $LogProvider {
         // Account for object arguments
         [ this.outfile, this.timestamp, this.level, this.silent ] =
             typeof outfile === 'object' ? [
-                outfile.outfile || outfile.file || outfile,
-                outfile.timestamp || timestamp,
-                outfile.level || outfile.logLevel || level,
-                outfile.silent || silent
+                outfile.hasOwnProperty('outfile') ||
+                    outfile.hasOwnProperty('file') ? outfile.outfile ||
+                        outfile.file : DEFAULT_LOG_FILE,
+                outfile.hasOwnProperty('timestamp') ?
+                    outfile.timestamp : timestamp,
+                outfile.hasOwnProperty('level') ||
+                outfile.hasOwnProperty('logLevel') ?
+                    outfile.level || outfile.logLevel : level,
+                outfile.hasOwnProperty('silent') ? outfile.silent : silent
             ] : [ outfile, timestamp, level, silent ];
 
         // Check the log level and make sure it is an acceptable value
@@ -71,19 +81,14 @@ class $LogProvider {
         // Observe the messages array, logging a record each time a message is
         // added
         let me = this;
-        Object.observe((this.messages = []), function() {
-            let message = me.messages.shift();
+        Object.observe(messages, function() {
+            let message = messages.shift();
 
-            // For all of the messages
-            // TODO does this have to be a while loop?
-            // while (message = me.messages.shift()) {
-            //
-            //     // Forcibly add a hard return if one does not exist
+            // Forcibly add a hard return if one does not exist
             message = !/.*(\r|\n)/.test(message) ? `${message}\n` : message;
-            //
-            //     // Write to the output file
+
+            // Write to the output file
             fs.appendFile(me.outfile, message);
-            // }
         }, [ 'add' ]);
     }
 
@@ -97,25 +102,27 @@ class $LogProvider {
      * @example new $LogProvider(output.log, true, 'DEBUG', false).logger('test');
      */
     logger(out) {
-        this.messages.push(
+        messages.push(
             `[${this.timestamp ? new Date().toString() : ''}]` +
             `[${this.level}]: ` + out
         );
         if (this.silent !== true) {
             $LogProvider[ this.level.toLowerCase() ](out);
         }
+        return this;
     }
 
     /**
      * @desc Set the file to which the logger records
      * @since 0.0.2
-     * @param {string} o [param='./angie.log'] The file to which messages are
-     * logged
+     * @param {string} o [param=p.cwd() + '/angie.log'] The file to which
+     * messages are logged
      * @access private
      * @example new $LogProvider().$setlogger('./angie.log');
      */
-    $setOutfile(o = `${p.cwd()}angie.log`) {
+    $setOutfile(o = DEFAULT_LOG_FILE) {
         this.outfile = o;
+        return this;
     }
 
     /**
@@ -128,6 +135,7 @@ class $LogProvider {
      */
     $setTimestamp(t = true) {
         this.timestamp = t;
+        return this;
     }
 
     /**
@@ -143,6 +151,7 @@ class $LogProvider {
         this.level = LOG_LEVELS[
             LOG_LEVELS.hasOwnProperty(l) ? l : 'debug'
         ];
+        return this;
     }
 
     /**
@@ -155,6 +164,7 @@ class $LogProvider {
      */
     $setSilent(s = false) {
         this.silent = s;
+        return this;
     }
 
     /**
@@ -165,7 +175,7 @@ class $LogProvider {
      * @example new $LogProvider.bold('test');
      */
     static bold() {
-        return console.log(bold.apply(null, arguments));
+        console.log(bold(...$carriage(...arguments)));
     }
 
     /**
@@ -176,7 +186,7 @@ class $LogProvider {
      * @example new $LogProvider.info('test');
      */
     static info() {
-        let args = Util.$carriage.apply(null, arguments);
+        let args = $carriage(...arguments);
         args.unshift(chalk.green(`[${new Date().toString()}][INFO]:`));
         args.push('\r');
         console.log(bold.apply(null, args));
@@ -190,7 +200,7 @@ class $LogProvider {
      * @example new $LogProvider.debug('test');
      */
     static debug() {
-        let args = Util.$carriage.apply(null, arguments);
+        let args = $carriage(...arguments);
         args.unshift(`[${new Date().toString()}][DEBUG]:`);
         args.push('\r');
         console.log(bold.apply(null, args));
@@ -204,7 +214,7 @@ class $LogProvider {
      * @example new $LogProvider.warn('test');
      */
     static warn() {
-        let args = Util.$carriage.apply(null, arguments);
+        let args = $carriage(...arguments);
         args.unshift(chalk.yellow(`[${new Date().toString()}][WARN]:`));
         args.push('\r');
         console.warn(bold.apply(null, args));
@@ -218,7 +228,7 @@ class $LogProvider {
      * @example new $LogProvider.error('test');
      */
     static error() {
-        let args = Util.$carriage.apply(null, arguments);
+        let args = $carriage(...arguments);
         if (args && args[0].stack) {
             args[0] = args[0].stack;
         }
@@ -235,8 +245,14 @@ class $LogProvider {
      * @example new $LogProvider.$shell();
      */
     static $shell() {
-        return chalk.cyan(bold('ANGIE > '));
+        return chalk.cyan(bold('ANGIE >'));
     }
+}
+
+// Helper function to drop hard returns in between arguments
+function $carriage() {
+    let args = Array.prototype.slice.call(arguments);
+    return args.map((v) => v.replace ? v.replace(/(\r|\n)/g, ' ') : v);
 }
 
 export default $LogProvider;

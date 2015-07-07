@@ -15,7 +15,7 @@ import chalk from               'chalk';
 import $LogProvider from        './src/services/$LogProvider';
 
 const src = 'src/**/*.js',
-      testSrc = 'test/**/*.spec.js',
+      testSrc = 'test/src/services/$LogProvider.spec.js',
       docSrc = 'doc',
       coverageDir = 'coverage';
 
@@ -43,7 +43,7 @@ gulp.task('mocha', function(cb) {
         proc = gulp.src(src).pipe(
             istanbul({
                 instrumenter: Instrumenter,
-                includeUntested: true
+                includeUntested: false
             })
         ).pipe(
             istanbul.hookRequire()
