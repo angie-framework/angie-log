@@ -2,12 +2,11 @@
 
 This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie MVC](https://github.com/benderTheCrime/angie).
 
-<!-- TODO add badges -->
-<!-- ![build status](https://travis-ci.org/benderTheCrime/angie-log.svg?branch=debug-travis "build status")
+![build status](https://travis-ci.org/benderTheCrime/angie-log.svg?branch=debug-travis "build status")
 ![iojs support](https://img.shields.io/badge/iojs-1.7.1+-brightgreen.svg "iojs support")
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
 ![code coverage](https://rawgit.com/benderTheCrime/angie-log/master/svg/coverage.svg "code coverage")
-![npm downloads](https://img.shields.io/npm/dm/angie-log.svg "npm downloads") -->
+![npm downloads](https://img.shields.io/npm/dm/angie-log.svg "npm downloads")
 
 [![NPM](https://nodei.co/npm/angie-log.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-log/)
 
