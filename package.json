@@ -2,7 +2,7 @@
   "name": "angie-log",
   "version": "0.9.0",
   "author": "Joe Groseclose <@benderTheCrime>",
-  "description": "CLI and System Logger for the Angie MVC",
+  "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
   "main": "src/index.js",
   "private": false,
