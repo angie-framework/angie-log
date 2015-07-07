@@ -1,6 +1,6 @@
 {
   "name": "angie-log",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "CLI and System Logger for the Angie MVC",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "node": "*"
   },
   "bin": {
-    "angie": "bin/angie-orm"
+    "angie": "bin/angie-log"
   },
   "repository": {
     "type": "git",

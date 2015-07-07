@@ -12,8 +12,8 @@
 
 ### Usage
 ```bash
-npm i -g angie-orm
-angie-orm help
+npm i -g angie-log
+angie-log help
 ```
 
 Please see the [site](http://benderthecrime.github.io/angie/#/about) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
