@@ -13,7 +13,6 @@ This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It
 ### Usage
 ```bash
 npm i -g angie-log
-angie-log help
 ```
 ```javascript
 import {default as Log} from 'angie-log';
