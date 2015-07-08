@@ -4,11 +4,10 @@
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
-  "main": "src/services/$LogProvider.js",
+  "main": "src/services/test.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "start": "node src/services/$LogProvider",
     "test": "gulp",
     "publish": "gulp"
   },
@@ -16,13 +15,6 @@
     "iojs": "*",
     "babel-node": "*",
     "node": "*"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/benderTheCrime/angie-orm.git"
-  },
-  "bugs": {
-    "url": "https://github.com/benderTheCrime/angie-orm.git/issues"
   },
   "keywords": [
     "Angie",
@@ -59,7 +51,7 @@
     "yargs": "3.8.0"
   },
   "dependencies": {
-    "babel": "5.6.4",
+    "babel": "^5.6.4",
     "chalk": "1.0.0"
   }
 }
