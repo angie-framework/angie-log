@@ -15,7 +15,7 @@ import chalk from               'chalk';
 import $LogProvider from        './src/services/$LogProvider';
 
 const src = 'src/**/*.js',
-      testSrc = 'test/src/services/$LogProvider.spec.js',
+      testSrc = 'test/src/**/*.spec.js',
       docSrc = 'doc',
       coverageDir = 'coverage';
 
