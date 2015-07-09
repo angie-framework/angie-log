@@ -4,7 +4,10 @@
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
-  "main": "src/services/test.js",
+  "bin": {
+      "angie-log": "bin/angie-log"
+  },
+  "main": "src/services/$LogProvider.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {

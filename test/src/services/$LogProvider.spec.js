@@ -283,6 +283,6 @@ describe('$LogProvider', function() {
         });
     });
     it('test shell', function() {
-        expect(Log.$shell()).to.eq(chalk.cyan(bold('ANGIE >')));
+        expect(Log.$shell()).to.eq(chalk.cyan(bold('angie > ')));
     });
 });

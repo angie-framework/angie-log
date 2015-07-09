@@ -103,8 +103,8 @@ class $LogProvider {
      */
     logger(out) {
         messages.push(
-            `[${this.timestamp ? new Date().toString() : ''}]` +
-            `[${this.level}]: ` + out
+            `[${this.timestamp ? new Date().toString() : ''}] ` +
+            `${this.level} : ` + out
         );
         if (this.silent !== true) {
             $LogProvider[ this.level.toLowerCase() ](out);
@@ -187,7 +187,7 @@ class $LogProvider {
      */
     static info() {
         let args = $carriage(...arguments);
-        args.unshift(chalk.green(`[${new Date().toString()}][INFO]:`));
+        args.unshift(chalk.green(`[${new Date().toString()}] INFO :`));
         args.push('\r');
         console.log(bold.apply(null, args));
     }
@@ -201,7 +201,7 @@ class $LogProvider {
      */
     static debug() {
         let args = $carriage(...arguments);
-        args.unshift(`[${new Date().toString()}][DEBUG]:`);
+        args.unshift(`[${new Date().toString()}] DEBUG :`);
         args.push('\r');
         console.log(bold.apply(null, args));
     }
@@ -215,7 +215,7 @@ class $LogProvider {
      */
     static warn() {
         let args = $carriage(...arguments);
-        args.unshift(chalk.yellow(`[${new Date().toString()}][WARN]:`));
+        args.unshift(chalk.yellow(`[${new Date().toString()}] WARN :`));
         args.push('\r');
         console.warn(bold.apply(null, args));
     }
@@ -233,7 +233,7 @@ class $LogProvider {
             args[0] = args[0].stack;
         }
         args.unshift(
-            chalk.red(`[${new Date().toString()}][ERROR]:`));
+            chalk.red(`[${new Date().toString()}] ERROR :`));
         args.push('\r');
         console.error(bold.apply(null, args));
     }
@@ -245,7 +245,7 @@ class $LogProvider {
      * @example new $LogProvider.$shell();
      */
     static $shell() {
-        return chalk.cyan(bold('ANGIE >'));
+        return chalk.cyan(bold('angie > '));
     }
 }
 
