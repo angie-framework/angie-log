@@ -4,4 +4,4 @@
 global.ANGIE_LOG_VERSION = '0.9.1';
 
 require('babel/register')({ ignore: false });
-require('../src/services/test');
+require('../src/services/$LogProvider');
