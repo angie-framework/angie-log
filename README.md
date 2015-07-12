@@ -19,10 +19,10 @@ import {default as Log} from 'angie-log';
 
 // Call a new logger with defaults
 let log = new Log({
-    outfile:    'log.log', // defaults to p.cwd() + '/angie.log'
+    outfile:    'log.log',  // defaults to p.cwd() + '/angie.log'
     file:       'log.log',
     timestamp:  true,
-    level:      'debug', // info, debug, warn, error
+    level:      'debug',    // info, debug, warn, error
     silent:     false
 });
 
