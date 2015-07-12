@@ -98,9 +98,8 @@ describe('$LogProvider', function() {
             it('test Observer called with message', function(cb) {
                 log.logger('test');
                 setTimeout(function() {
-                    console.log(fs.appendFile.calls[0].args);
                     expect(fs.appendFile.calls[0].args).to.deep.eq(
-                        [ `${p.cwd()}/angie.log`, '[test][DEBUG]: test\n' ]
+                        [ `${p.cwd()}/angie.log`, '[test] DEBUG : test\n' ]
                     );
                     cb();
                 }, 1000);
@@ -109,7 +108,7 @@ describe('$LogProvider', function() {
                 log.logger('test\r');
                 setTimeout(function() {
                     expect(fs.appendFile.calls[0].args).to.deep.eq(
-                        [ `${p.cwd()}/angie.log`, '[test][DEBUG]: test\r' ]
+                        [ `${p.cwd()}/angie.log`, '[test] DEBUG : test\r' ]
                     );
                     cb();
                 }, 100);
@@ -230,7 +229,7 @@ describe('$LogProvider', function() {
             Log.info('test\n', 'test\n');
             expect(console.log.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.green('[test][INFO]:'),
+                    chalk.green('[test] INFO :'),
                     'test ',
                     'test ',
                     '\r'
@@ -241,7 +240,7 @@ describe('$LogProvider', function() {
             Log.debug('test\n', 'test\n');
             expect(console.log.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    '[test][DEBUG]:',
+                    '[test] DEBUG :',
                     'test ',
                     'test ',
                     '\r'
@@ -252,7 +251,7 @@ describe('$LogProvider', function() {
             Log.warn('test\n', 'test\n');
             expect(console.warn.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.yellow('[test][WARN]:'),
+                    chalk.yellow('[test] WARN :'),
                     'test ',
                     'test ',
                     '\r'
@@ -263,7 +262,7 @@ describe('$LogProvider', function() {
             Log.error('test\n', 'test\n');
             expect(console.error.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.red('[test][ERROR]:'),
+                    chalk.red('[test] ERROR :'),
                     'test ',
                     'test ',
                     '\r'
@@ -274,7 +273,7 @@ describe('$LogProvider', function() {
             Log.error({ stack: 'stack' }, 'test\n');
             expect(console.error.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.red('[test][ERROR]:'),
+                    chalk.red('[test] ERROR :'),
                     'stack',
                     'test ',
                     '\r'
