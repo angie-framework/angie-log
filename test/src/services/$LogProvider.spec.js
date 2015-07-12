@@ -1,15 +1,15 @@
 'use strict'; 'use strong';
 
 // System Modules
-import fs from                       'fs';
-import chalk from                    'chalk';
+import fs from                  'fs';
+import chalk from               'chalk';
 
 // Test Modules
-import {expect} from                 'chai';
+import {expect} from            'chai';
 import simple, {mock} from      'simple-mock';
 
 // Angie Log Modules
-import {default as Log} from         '../../../src/services/$LogProvider';
+import {default as Log} from    '../../../src/services/$LogProvider';
 
 const p = process,
       bold = chalk.bold;
