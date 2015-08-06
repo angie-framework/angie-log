@@ -1,4 +1,4 @@
-## Angie Logs
+## Angie Log
 
 This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie MVC](https://github.com/benderTheCrime/angie).
 
