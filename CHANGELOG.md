@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.2] - 2015-08-08
+##### Changed
+- Update README
+- Remove the `Connect` package from dependencies
+
 #### [0.9.1] - 2015-07-08
 ##### Fixed
 - Fixed imports, removed trivial files so this package can more easily be imported.

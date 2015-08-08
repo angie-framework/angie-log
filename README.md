@@ -30,7 +30,7 @@ let log = new Log({
 log.logger('test');
 
 // $setOutfile to change the output file
-log.$setOutfile(`${p.cwd()}/angie.log`);
+log.$setOutfile(`${process.cwd()}/angie.log`);
 
 // $setTimestamp to toggle timestamps in the log output
 log.$setTimestamp(true);
