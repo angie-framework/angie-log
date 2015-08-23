@@ -5,13 +5,14 @@
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
   "bin": {
-      "angie-log": "bin/angie-log"
+      "angie-log": "bin/angie-log",
+      "angie-log-dist": "bin/angie-log-dist"
   },
-  "main": "src/services/$LogProvider.js",
+  "main": "dist/services/$LogProvider.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp",
+    "test": "gulp test",
     "publish": "gulp"
   },
   "engines": {
@@ -36,10 +37,9 @@
     "url": "https://github.com/benderTheCrime/angie-log.git/issues"
   },
   "devDependencies": {
-    "babel-eslint": "3.1.17",
+    "babel-eslint": "^3.1.17",
     "chai": "2.3.0",
-    "connect": "2.x.x",
-    "esdoc": "0.1.2",
+    "esdoc": "0.2.2",
     "gulp": "3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-cli": "0.2.0",
