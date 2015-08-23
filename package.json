@@ -5,7 +5,8 @@
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
   "bin": {
-      "angie-log": "bin/angie-log"
+      "angie-log": "bin/angie-log",
+      "angie-log-dist": "bin/angie-log-dist"
   },
   "main": "src/services/$LogProvider.js",
   "private": false,

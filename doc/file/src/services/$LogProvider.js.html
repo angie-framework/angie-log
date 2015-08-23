@@ -1,20 +1,63 @@
-/**
- * @module $LogProvider.js
- * @author Joe Groseclose <@benderTheCrime>
- * @date 8/23/2015
- */
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/services/$LogProvider.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
 
-// System Modules
-import fs from      'fs';
-import chalk from   'chalk';
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/benderTheCrime/angie-log.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/src/services/$LogProvider.js~$LogProvider.html">$LogProvider</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/services/$LogProvider.js</h1>
+<pre class="source-code line-number"><code class="prettyprint linenums" data-ice="content">// System Modules
+import fs from      &apos;fs&apos;;
+import chalk from   &apos;chalk&apos;;
 
 const p = process,
       bold = chalk.bold,
       LOG_LEVELS = {
-          error: 'ERROR',
-          warn: 'WARN',
-          debug: 'DEBUG',
-          info: 'INFO'
+          error: &apos;ERROR&apos;,
+          warn: &apos;WARN&apos;,
+          debug: &apos;DEBUG&apos;,
+          info: &apos;INFO&apos;
       },
       DEFAULT_LOG_FILE = `${p.cwd()}/angie.log`;
 
@@ -37,46 +80,46 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string|object} outfile The file to which messages are logged, or
      * a hash of options to pass the logger
-     * @param {string} outfile.outfile [param=p.cwd() + '/angie.log'] The file
+     * @param {string} outfile.outfile [param=p.cwd() + &apos;/angie.log&apos;] The file
      * to which messages are logged
-     * @param {string} outfile.file [param=p.cwd() + '/angie.log'] The file to
+     * @param {string} outfile.file [param=p.cwd() + &apos;/angie.log&apos;] The file to
      * which messages are logged
      * @param {boolean} outfile.timestamp [param=true] Whether or not to include
      * a timestamp in the log output
-     * @param {string} outfile.level [param='DEBUG'] The recorded log message
+     * @param {string} outfile.level [param=&apos;DEBUG&apos;] The recorded log message
      * level. Possible options: debug, error, info, warn
-     * @param {string} outfile.logLevel [param='DEBUG'] The recorded log message
+     * @param {string} outfile.logLevel [param=&apos;DEBUG&apos;] The recorded log message
      * level. Possible options: debug, error, info, warn
      * @param {boolean} outfile.silent [param=false] The recorded log message
      * level. Possible options: debug, error, info, warn
      * @param {boolean} timestamp [param=true] Whether or not to include a
      * timestamp in the log output
-     * @param {string} level [param='DEBUG'] The recorded log message level.
+     * @param {string} level [param=&apos;DEBUG&apos;] The recorded log message level.
      * Possible options: debug, error, info, warn
      * @param {boolean} silent [param=false] Should the log output also log to
      * the terminal?
      * @access public
-     * @example new $LogProvider(output.log, true, 'DEBUG', false);
+     * @example new $LogProvider(output.log, true, &apos;DEBUG&apos;, false);
      */
     constructor(
         outfile = DEFAULT_LOG_FILE,
         timestamp = true,
-        level = 'DEBUG',
+        level = &apos;DEBUG&apos;,
         silent = false
     ) {
 
         // Account for object arguments
         [ this.outfile, this.timestamp, this.level, this.silent ] =
-            typeof outfile === 'object' ? [
-                outfile.hasOwnProperty('outfile') ||
-                    outfile.hasOwnProperty('file') ? outfile.outfile ||
+            typeof outfile === &apos;object&apos; ? [
+                outfile.hasOwnProperty(&apos;outfile&apos;) ||
+                    outfile.hasOwnProperty(&apos;file&apos;) ? outfile.outfile ||
                         outfile.file : DEFAULT_LOG_FILE,
-                outfile.hasOwnProperty('timestamp') ?
+                outfile.hasOwnProperty(&apos;timestamp&apos;) ?
                     outfile.timestamp : timestamp,
-                outfile.hasOwnProperty('level') ||
-                outfile.hasOwnProperty('logLevel') ?
+                outfile.hasOwnProperty(&apos;level&apos;) ||
+                outfile.hasOwnProperty(&apos;logLevel&apos;) ?
                     outfile.level || outfile.logLevel : level,
-                outfile.hasOwnProperty('silent') ? outfile.silent : silent
+                outfile.hasOwnProperty(&apos;silent&apos;) ? outfile.silent : silent
             ] : [ outfile, timestamp, level, silent ];
 
         // Check the log level and make sure it is an acceptable value
@@ -93,7 +136,7 @@ class $LogProvider {
 
             // Write to the output file
             fs.appendFile(me.outfile, message);
-        }, [ 'add' ]);
+        }, [ &apos;add&apos; ]);
     }
 
     /**
@@ -103,11 +146,11 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} out The message to add to the log
      * @access public
-     * @example new $LogProvider(output.log, true, 'DEBUG', false).logger('test');
+     * @example new $LogProvider(output.log, true, &apos;DEBUG&apos;, false).logger(&apos;test&apos;);
      */
     logger(out) {
         messages.push(
-            `[${this.timestamp ? new Date().toString() : ''}] ` +
+            `[${this.timestamp ? new Date().toString() : &apos;&apos;}] ` +
             `${this.level} : ` + out
         );
         if (this.silent !== true) {
@@ -119,10 +162,10 @@ class $LogProvider {
     /**
      * @desc Set the file to which the logger records
      * @since 0.0.2
-     * @param {string} o [param=p.cwd() + '/angie.log'] The file to which
+     * @param {string} o [param=p.cwd() + &apos;/angie.log&apos;] The file to which
      * messages are logged
      * @access private
-     * @example new $LogProvider().$setlogger('./angie.log');
+     * @example new $LogProvider().$setlogger(&apos;./angie.log&apos;);
      */
     $setOutfile(o = DEFAULT_LOG_FILE) {
         this.outfile = o;
@@ -148,12 +191,12 @@ class $LogProvider {
      * @param {string} l The recorded log message level.
      * Possible options: debug, error, info, warn
      * @access private
-     * @example new $LogProvider().$setLevel('debug');
+     * @example new $LogProvider().$setLevel(&apos;debug&apos;);
      */
     $setLevel(l) {
         l = l || this.level;
         this.level = LOG_LEVELS[
-            LOG_LEVELS.hasOwnProperty(l) ? l : 'debug'
+            LOG_LEVELS.hasOwnProperty(l) ? l : &apos;debug&apos;
         ];
         return this;
     }
@@ -176,7 +219,7 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} s One or many string inputs
      * @access public
-     * @example new $LogProvider.bold('test');
+     * @example new $LogProvider.bold(&apos;test&apos;);
      */
     static bold() {
         console.log(bold(...$carriage(...arguments)));
@@ -187,12 +230,12 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} s One or many string inputs
      * @access public
-     * @example new $LogProvider.info('test');
+     * @example new $LogProvider.info(&apos;test&apos;);
      */
     static info() {
         let args = $carriage(...arguments);
         args.unshift(chalk.green(`[${new Date().toString()}] INFO :`));
-        args.push('\r');
+        args.push(&apos;\r&apos;);
         console.log(bold.apply(null, args));
     }
 
@@ -201,12 +244,12 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} s One or many string inputs
      * @access public
-     * @example new $LogProvider.debug('test');
+     * @example new $LogProvider.debug(&apos;test&apos;);
      */
     static debug() {
         let args = $carriage(...arguments);
         args.unshift(`[${new Date().toString()}] DEBUG :`);
-        args.push('\r');
+        args.push(&apos;\r&apos;);
         console.log(bold.apply(null, args));
     }
 
@@ -215,12 +258,12 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} s One or many string inputs
      * @access public
-     * @example new $LogProvider.warn('test');
+     * @example new $LogProvider.warn(&apos;test&apos;);
      */
     static warn() {
         let args = $carriage(...arguments);
         args.unshift(chalk.yellow(`[${new Date().toString()}] WARN :`));
-        args.push('\r');
+        args.push(&apos;\r&apos;);
         console.warn(bold.apply(null, args));
     }
 
@@ -229,16 +272,16 @@ class $LogProvider {
      * @since 0.0.2
      * @param {string} s One or many string inputs
      * @access public
-     * @example new $LogProvider.error('test');
+     * @example new $LogProvider.error(&apos;test&apos;);
      */
     static error() {
         let args = $carriage(...arguments);
-        if (args && args[0].stack) {
+        if (args &amp;&amp; args[0].stack) {
             args[0] = args[0].stack;
         }
         args.unshift(
             chalk.red(`[${new Date().toString()}] ERROR :`));
-        args.push('\r');
+        args.push(&apos;\r&apos;);
         console.error(bold.apply(null, args));
     }
 
@@ -249,14 +292,29 @@ class $LogProvider {
      * @example new $LogProvider.$shell();
      */
     static $shell() {
-        return chalk.cyan(bold('angie > '));
+        return chalk.cyan(bold(&apos;angie &gt; &apos;));
     }
 }
 
 // Helper function to drop hard returns in between arguments
 function $carriage() {
     let args = Array.prototype.slice.call(arguments);
-    return args.map((v) => v.replace ? v.replace(/(\r|\n)/g, ' ') : v);
+    return args.map((v) =&gt; v.replace ? v.replace(/(\r|\n)/g, &apos; &apos;) : v);
 }
 
-export default $LogProvider;
+export default $LogProvider;</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.1.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

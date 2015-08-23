@@ -1,5 +1,3 @@
-'use strict'; 'use strong';
-
 // System Modules
 import gulp from                'gulp';
 import {exec} from              'child_process';
@@ -9,18 +7,17 @@ import istanbul from            'gulp-istanbul';
 import {Instrumenter} from      'isparta';
 import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
+import babel from               'gulp-babel';
 import chalk from               'chalk';
 
-// Angie Log Modules
-import $LogProvider from        './src/services/$LogProvider';
-
-const src = 'src/**/*.js',
-      testSrc = 'test/src/**/*.spec.js',
-      docSrc = 'doc',
-      coverageDir = 'coverage';
+const SRC = 'src/**/*.js',
+    TRANSPILED_SRC = 'dist',
+    TEST_SRC = 'test/src/**/*.spec.js',
+    DOC_SRC = 'doc',
+    COVERAGE_SRC = 'coverage';
 
 gulp.task('eslint', function () {
-    gulp.src([ src, testSrc ]).pipe(
+    gulp.src([ SRC, TEST_SRC ]).pipe(
         eslint()
     ).pipe(
         eslint.format()
@@ -29,7 +26,7 @@ gulp.task('eslint', function () {
     );
 });
 gulp.task('jscs', [ 'eslint' ], function () {
-    return gulp.src([ src, testSrc ])
+    return gulp.src([ SRC, TEST_SRC ])
         .pipe(jscs({
             fix: true,
             configPath: '.jscsrc',
@@ -40,7 +37,7 @@ gulp.task('mocha', function(cb) {
     let proc;
 
     new Promise(function(resolve, reject) {
-        proc = gulp.src(src).pipe(
+        proc = gulp.src(SRC).pipe(
             istanbul({
                 instrumenter: Instrumenter,
                 includeUntested: false
@@ -48,15 +45,13 @@ gulp.task('mocha', function(cb) {
         ).pipe(
             istanbul.hookRequire()
         ).on('finish', function() {
-            $LogProvider.info('Running Angie Mocha test suite');
             gulp.src(
                 [ 'test/src/testUtil.spec.js', 'test/**/!(*testUtil).spec.js' ],
                 { read: false }
             ).pipe(mocha({
                 reporter: 'spec'
             }).on('error', function(e) {
-                $LogProvider.error(e);
-                resolve();
+                throw new Error(e);
             }).on('end', function() {
                 resolve();
             }));
@@ -73,14 +68,17 @@ gulp.task('mocha', function(cb) {
         return cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
     });
 });
+gulp.task('babel', function() {
+    return gulp.src(SRC).pipe(babel()).pipe(gulp.dest(TRANSPILED_SRC));
+});
 gulp.task('esdoc', function(cb) {
-    $LogProvider.info('Generating Angie documentation');
     exec('esdoc -c esdoc.json', cb);
 });
 gulp.task('watch', [ 'jscs', 'mocha' ], function() {
-    gulp.watch([ src, testSrc, '../gh-pages-angie/**' ], [ 'mocha' ]);
+    gulp.watch([ SRC, TEST_SRC, '../gh-pages-angie/**' ], [ 'mocha' ]);
 });
 gulp.task('watch:mocha', [ 'jscs', 'mocha' ], function() {
-    gulp.watch([ src, testSrc, '../gh-pages-angie/**' ], [ 'mocha' ]);
+    gulp.watch([ SRC, TEST_SRC, '../gh-pages-angie/**' ], [ 'mocha' ]);
 });
-gulp.task('default', [ 'jscs', 'mocha' ]);
+gulp.task('test', [ 'jscs', 'mocha' ]);
+gulp.task('default', [ 'jscs', 'mocha', 'babel', 'esdoc' ]);
