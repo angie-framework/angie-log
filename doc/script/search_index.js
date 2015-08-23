@@ -1,8 +1,8 @@
 window.esdocSearchIndex = [
   [
-    "angie-log~$logprovider",
+    "angie-log/src/services/$logprovider.js~$logprovider",
     "class/src/services/$LogProvider.js~$LogProvider.html",
-    "<span>$LogProvider</span> <span class=\"search-result-import-path\">angie-log</span>",
+    "<span>$LogProvider</span> <span class=\"search-result-import-path\">angie-log/src/services/$LogProvider.js</span>",
     "class"
   ],
   [

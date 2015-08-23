@@ -8,7 +8,7 @@
       "angie-log": "bin/angie-log",
       "angie-log-dist": "bin/angie-log-dist"
   },
-  "main": "src/services/$LogProvider.js",
+  "main": "dist/services/$LogProvider.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
