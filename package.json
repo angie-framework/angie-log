@@ -12,7 +12,7 @@
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp",
+    "test": "gulp test",
     "publish": "gulp"
   },
   "engines": {
@@ -39,7 +39,7 @@
   "devDependencies": {
     "babel-eslint": "3.1.17",
     "chai": "2.3.0",
-    "esdoc": "0.1.2",
+    "esdoc": "0.2.2",
     "gulp": "3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-cli": "0.2.0",
