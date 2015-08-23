@@ -1,4 +1,4 @@
-## Angie Logs
+## Angie Log
 
 This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie MVC](https://github.com/benderTheCrime/angie).
 
@@ -30,7 +30,7 @@ let log = new Log({
 log.logger('test');
 
 // $setOutfile to change the output file
-log.$setOutfile(`${p.cwd()}/angie.log`);
+log.$setOutfile(`${process.cwd()}/angie.log`);
 
 // $setTimestamp to toggle timestamps in the log output
 log.$setTimestamp(true);
