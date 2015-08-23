@@ -8,8 +8,8 @@
     "longname": "src/services/$LogProvider.js",
     "access": null,
     "description": null,
-    "lineNumber": 2,
-    "content": "// System Modules\nimport fs from      'fs';\nimport chalk from   'chalk';\n\nconst p = process,\n      bold = chalk.bold,\n      LOG_LEVELS = {\n          error: 'ERROR',\n          warn: 'WARN',\n          debug: 'DEBUG',\n          info: 'INFO'\n      },\n      DEFAULT_LOG_FILE = `${p.cwd()}/angie.log`;\n\n// Message Array to watch and log\nlet messages = [];\n\n/**\n * @desc $LogProvider is the only class in the Angie Logging module. This module\n * allows for logging to the terminal (with a little flavor).\n *\n * This can also be referenced as Log\n * @since 0.0.2\n * @access public\n * @example new $LogProvider();\n */\nclass $LogProvider {\n\n    /**\n     * @desc Instantiate a logger for use in the current module.\n     * @since 0.0.2\n     * @param {string|object} outfile The file to which messages are logged, or\n     * a hash of options to pass the logger\n     * @param {string} outfile.outfile [param=p.cwd() + '/angie.log'] The file\n     * to which messages are logged\n     * @param {string} outfile.file [param=p.cwd() + '/angie.log'] The file to\n     * which messages are logged\n     * @param {boolean} outfile.timestamp [param=true] Whether or not to include\n     * a timestamp in the log output\n     * @param {string} outfile.level [param='DEBUG'] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {string} outfile.logLevel [param='DEBUG'] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {boolean} outfile.silent [param=false] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {boolean} timestamp [param=true] Whether or not to include a\n     * timestamp in the log output\n     * @param {string} level [param='DEBUG'] The recorded log message level.\n     * Possible options: debug, error, info, warn\n     * @param {boolean} silent [param=false] Should the log output also log to\n     * the terminal?\n     * @access public\n     * @example new $LogProvider(output.log, true, 'DEBUG', false);\n     */\n    constructor(\n        outfile = DEFAULT_LOG_FILE,\n        timestamp = true,\n        level = 'DEBUG',\n        silent = false\n    ) {\n\n        // Account for object arguments\n        [ this.outfile, this.timestamp, this.level, this.silent ] =\n            typeof outfile === 'object' ? [\n                outfile.hasOwnProperty('outfile') ||\n                    outfile.hasOwnProperty('file') ? outfile.outfile ||\n                        outfile.file : DEFAULT_LOG_FILE,\n                outfile.hasOwnProperty('timestamp') ?\n                    outfile.timestamp : timestamp,\n                outfile.hasOwnProperty('level') ||\n                outfile.hasOwnProperty('logLevel') ?\n                    outfile.level || outfile.logLevel : level,\n                outfile.hasOwnProperty('silent') ? outfile.silent : silent\n            ] : [ outfile, timestamp, level, silent ];\n\n        // Check the log level and make sure it is an acceptable value\n        this.$setLevel(this.level);\n\n        // Observe the messages array, logging a record each time a message is\n        // added\n        let me = this;\n        Object.observe(messages, function() {\n            let message = messages.shift();\n\n            // Forcibly add a hard return if one does not exist\n            message = !/.*(\\r|\\n)/.test(message) ? `${message}\\n` : message;\n\n            // Write to the output file\n            fs.appendFile(me.outfile, message);\n        }, [ 'add' ]);\n    }\n\n    /**\n     * @desc $LogProvider.logger will add a log statement for each call that is\n     * made. It pushes messages to an asynchronous queue, which will execute as\n     * messages are added.\n     * @since 0.0.2\n     * @param {string} out The message to add to the log\n     * @access public\n     * @example new $LogProvider(output.log, true, 'DEBUG', false).logger('test');\n     */\n    logger(out) {\n        messages.push(\n            `[${this.timestamp ? new Date().toString() : ''}] ` +\n            `${this.level} : ` + out\n        );\n        if (this.silent !== true) {\n            $LogProvider[ this.level.toLowerCase() ](out);\n        }\n        return this;\n    }\n\n    /**\n     * @desc Set the file to which the logger records\n     * @since 0.0.2\n     * @param {string} o [param=p.cwd() + '/angie.log'] The file to which\n     * messages are logged\n     * @access private\n     * @example new $LogProvider().$setlogger('./angie.log');\n     */\n    $setOutfile(o = DEFAULT_LOG_FILE) {\n        this.outfile = o;\n        return this;\n    }\n\n    /**\n     * @desc Set the logger timestamp preference\n     * @since 0.0.2\n     * @param {boolean} t [param=true] Whether or not to include a timestamp in\n     * the log output\n     * @access private\n     * @example new $LogProvider().$setTimestamp(true);\n     */\n    $setTimestamp(t = true) {\n        this.timestamp = t;\n        return this;\n    }\n\n    /**\n     * @desc Set the log level\n     * @since 0.0.2\n     * @param {string} l The recorded log message level.\n     * Possible options: debug, error, info, warn\n     * @access private\n     * @example new $LogProvider().$setLevel('debug');\n     */\n    $setLevel(l) {\n        l = l || this.level;\n        this.level = LOG_LEVELS[\n            LOG_LEVELS.hasOwnProperty(l) ? l : 'debug'\n        ];\n        return this;\n    }\n\n    /**\n     * @desc Set the logger silent preference\n     * @since 0.0.2\n     * @param {boolean} s [param=false] Should the log output also log to\n     * the terminal?\n     * @access private\n     * @example new $LogProvider().$setTimestamp(false);\n     */\n    $setSilent(s = false) {\n        this.silent = s;\n        return this;\n    }\n\n    /**\n     * @desc A wrapper for bold output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.bold('test');\n     */\n    static bold() {\n        console.log(bold(...$carriage(...arguments)));\n    }\n\n    /**\n     * @desc A wrapper for INFO output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.info('test');\n     */\n    static info() {\n        let args = $carriage(...arguments);\n        args.unshift(chalk.green(`[${new Date().toString()}] INFO :`));\n        args.push('\\r');\n        console.log(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for DEBUG output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.debug('test');\n     */\n    static debug() {\n        let args = $carriage(...arguments);\n        args.unshift(`[${new Date().toString()}] DEBUG :`);\n        args.push('\\r');\n        console.log(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for WARN output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.warn('test');\n     */\n    static warn() {\n        let args = $carriage(...arguments);\n        args.unshift(chalk.yellow(`[${new Date().toString()}] WARN :`));\n        args.push('\\r');\n        console.warn(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for ERROR output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.error('test');\n     */\n    static error() {\n        let args = $carriage(...arguments);\n        if (args && args[0].stack) {\n            args[0] = args[0].stack;\n        }\n        args.unshift(\n            chalk.red(`[${new Date().toString()}] ERROR :`));\n        args.push('\\r');\n        console.error(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for REPL line starts\n     * @since 0.0.2\n     * @access private\n     * @example new $LogProvider.$shell();\n     */\n    static $shell() {\n        return chalk.cyan(bold('angie > '));\n    }\n}\n\n// Helper function to drop hard returns in between arguments\nfunction $carriage() {\n    let args = Array.prototype.slice.call(arguments);\n    return args.map((v) => v.replace ? v.replace(/(\\r|\\n)/g, ' ') : v);\n}\n\nexport default $LogProvider;"
+    "lineNumber": 8,
+    "content": "/**\n * @module $LogProvider.js\n * @author Joe Groseclose <@benderTheCrime>\n * @date 8/23/2015\n */\n\n// System Modules\nimport fs from      'fs';\nimport chalk from   'chalk';\n\nconst p = process,\n      bold = chalk.bold,\n      LOG_LEVELS = {\n          error: 'ERROR',\n          warn: 'WARN',\n          debug: 'DEBUG',\n          info: 'INFO'\n      },\n      DEFAULT_LOG_FILE = `${p.cwd()}/angie.log`;\n\n// Message Array to watch and log\nlet messages = [];\n\n/**\n * @desc $LogProvider is the only class in the Angie Logging module. This module\n * allows for logging to the terminal (with a little flavor).\n *\n * This can also be referenced as Log\n * @since 0.0.2\n * @access public\n * @example new $LogProvider();\n */\nclass $LogProvider {\n\n    /**\n     * @desc Instantiate a logger for use in the current module.\n     * @since 0.0.2\n     * @param {string|object} outfile The file to which messages are logged, or\n     * a hash of options to pass the logger\n     * @param {string} outfile.outfile [param=p.cwd() + '/angie.log'] The file\n     * to which messages are logged\n     * @param {string} outfile.file [param=p.cwd() + '/angie.log'] The file to\n     * which messages are logged\n     * @param {boolean} outfile.timestamp [param=true] Whether or not to include\n     * a timestamp in the log output\n     * @param {string} outfile.level [param='DEBUG'] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {string} outfile.logLevel [param='DEBUG'] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {boolean} outfile.silent [param=false] The recorded log message\n     * level. Possible options: debug, error, info, warn\n     * @param {boolean} timestamp [param=true] Whether or not to include a\n     * timestamp in the log output\n     * @param {string} level [param='DEBUG'] The recorded log message level.\n     * Possible options: debug, error, info, warn\n     * @param {boolean} silent [param=false] Should the log output also log to\n     * the terminal?\n     * @access public\n     * @example new $LogProvider(output.log, true, 'DEBUG', false);\n     */\n    constructor(\n        outfile = DEFAULT_LOG_FILE,\n        timestamp = true,\n        level = 'DEBUG',\n        silent = false\n    ) {\n\n        // Account for object arguments\n        [ this.outfile, this.timestamp, this.level, this.silent ] =\n            typeof outfile === 'object' ? [\n                outfile.hasOwnProperty('outfile') ||\n                    outfile.hasOwnProperty('file') ? outfile.outfile ||\n                        outfile.file : DEFAULT_LOG_FILE,\n                outfile.hasOwnProperty('timestamp') ?\n                    outfile.timestamp : timestamp,\n                outfile.hasOwnProperty('level') ||\n                outfile.hasOwnProperty('logLevel') ?\n                    outfile.level || outfile.logLevel : level,\n                outfile.hasOwnProperty('silent') ? outfile.silent : silent\n            ] : [ outfile, timestamp, level, silent ];\n\n        // Check the log level and make sure it is an acceptable value\n        this.$setLevel(this.level);\n\n        // Observe the messages array, logging a record each time a message is\n        // added\n        let me = this;\n        Object.observe(messages, function() {\n            let message = messages.shift();\n\n            // Forcibly add a hard return if one does not exist\n            message = !/.*(\\r|\\n)/.test(message) ? `${message}\\n` : message;\n\n            // Write to the output file\n            fs.appendFile(me.outfile, message);\n        }, [ 'add' ]);\n    }\n\n    /**\n     * @desc $LogProvider.logger will add a log statement for each call that is\n     * made. It pushes messages to an asynchronous queue, which will execute as\n     * messages are added.\n     * @since 0.0.2\n     * @param {string} out The message to add to the log\n     * @access public\n     * @example new $LogProvider(output.log, true, 'DEBUG', false).logger('test');\n     */\n    logger(out) {\n        messages.push(\n            `[${this.timestamp ? new Date().toString() : ''}] ` +\n            `${this.level} : ` + out\n        );\n        if (this.silent !== true) {\n            $LogProvider[ this.level.toLowerCase() ](out);\n        }\n        return this;\n    }\n\n    /**\n     * @desc Set the file to which the logger records\n     * @since 0.0.2\n     * @param {string} o [param=p.cwd() + '/angie.log'] The file to which\n     * messages are logged\n     * @access private\n     * @example new $LogProvider().$setlogger('./angie.log');\n     */\n    $setOutfile(o = DEFAULT_LOG_FILE) {\n        this.outfile = o;\n        return this;\n    }\n\n    /**\n     * @desc Set the logger timestamp preference\n     * @since 0.0.2\n     * @param {boolean} t [param=true] Whether or not to include a timestamp in\n     * the log output\n     * @access private\n     * @example new $LogProvider().$setTimestamp(true);\n     */\n    $setTimestamp(t = true) {\n        this.timestamp = t;\n        return this;\n    }\n\n    /**\n     * @desc Set the log level\n     * @since 0.0.2\n     * @param {string} l The recorded log message level.\n     * Possible options: debug, error, info, warn\n     * @access private\n     * @example new $LogProvider().$setLevel('debug');\n     */\n    $setLevel(l) {\n        l = l || this.level;\n        this.level = LOG_LEVELS[\n            LOG_LEVELS.hasOwnProperty(l) ? l : 'debug'\n        ];\n        return this;\n    }\n\n    /**\n     * @desc Set the logger silent preference\n     * @since 0.0.2\n     * @param {boolean} s [param=false] Should the log output also log to\n     * the terminal?\n     * @access private\n     * @example new $LogProvider().$setTimestamp(false);\n     */\n    $setSilent(s = false) {\n        this.silent = s;\n        return this;\n    }\n\n    /**\n     * @desc A wrapper for bold output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.bold('test');\n     */\n    static bold() {\n        console.log(bold(...$carriage(...arguments)));\n    }\n\n    /**\n     * @desc A wrapper for INFO output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.info('test');\n     */\n    static info() {\n        let args = $carriage(...arguments);\n        args.unshift(chalk.green(`[${new Date().toString()}] INFO :`));\n        args.push('\\r');\n        console.log(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for DEBUG output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.debug('test');\n     */\n    static debug() {\n        let args = $carriage(...arguments);\n        args.unshift(`[${new Date().toString()}] DEBUG :`);\n        args.push('\\r');\n        console.log(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for WARN output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.warn('test');\n     */\n    static warn() {\n        let args = $carriage(...arguments);\n        args.unshift(chalk.yellow(`[${new Date().toString()}] WARN :`));\n        args.push('\\r');\n        console.warn(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for ERROR output\n     * @since 0.0.2\n     * @param {string} s One or many string inputs\n     * @access public\n     * @example new $LogProvider.error('test');\n     */\n    static error() {\n        let args = $carriage(...arguments);\n        if (args && args[0].stack) {\n            args[0] = args[0].stack;\n        }\n        args.unshift(\n            chalk.red(`[${new Date().toString()}] ERROR :`));\n        args.push('\\r');\n        console.error(bold.apply(null, args));\n    }\n\n    /**\n     * @desc A wrapper for REPL line starts\n     * @since 0.0.2\n     * @access private\n     * @example new $LogProvider.$shell();\n     */\n    static $shell() {\n        return chalk.cyan(bold('angie > '));\n    }\n}\n\n// Helper function to drop hard returns in between arguments\nfunction $carriage() {\n    let args = Array.prototype.slice.call(arguments);\n    return args.map((v) => v.replace ? v.replace(/(\\r|\\n)/g, ' ') : v);\n}\n\nexport default $LogProvider;"
   },
   {
     "kind": "variable",
@@ -23,7 +23,7 @@
     "importPath": "angie-log",
     "importStyle": null,
     "description": null,
-    "lineNumber": 5,
+    "lineNumber": 11,
     "undocument": true,
     "type": {
       "types": [
@@ -43,7 +43,7 @@
     "importPath": "angie-log",
     "importStyle": null,
     "description": null,
-    "lineNumber": 16,
+    "lineNumber": 22,
     "undocument": true,
     "type": {
       "types": [
@@ -63,7 +63,7 @@
     "importPath": "angie-log",
     "importStyle": null,
     "description": null,
-    "lineNumber": 251,
+    "lineNumber": 257,
     "undocument": true,
     "params": [],
     "return": {
@@ -88,7 +88,7 @@
     "examples": [
       "new $LogProvider();"
     ],
-    "lineNumber": 27,
+    "lineNumber": 33,
     "since": "0.0.2",
     "interface": false
   },
@@ -104,7 +104,7 @@
     "examples": [
       "new $LogProvider(output.log, true, 'DEBUG', false);"
     ],
-    "lineNumber": 55,
+    "lineNumber": 61,
     "since": "0.0.2",
     "params": [
       {
@@ -222,7 +222,7 @@
     "examples": [
       "new $LogProvider(output.log, true, 'DEBUG', false).logger('test');"
     ],
-    "lineNumber": 102,
+    "lineNumber": 108,
     "since": "0.0.2",
     "params": [
       {
@@ -255,7 +255,7 @@
     "examples": [
       "new $LogProvider().$setlogger('./angie.log');"
     ],
-    "lineNumber": 121,
+    "lineNumber": 127,
     "since": "0.0.2",
     "params": [
       {
@@ -285,7 +285,7 @@
     "longname": "src/services/$LogProvider.js~$LogProvider#outfile",
     "access": null,
     "description": null,
-    "lineNumber": 122,
+    "lineNumber": 128,
     "undocument": true,
     "type": {
       "types": [
@@ -305,7 +305,7 @@
     "examples": [
       "new $LogProvider().$setTimestamp(true);"
     ],
-    "lineNumber": 134,
+    "lineNumber": 140,
     "since": "0.0.2",
     "params": [
       {
@@ -335,7 +335,7 @@
     "longname": "src/services/$LogProvider.js~$LogProvider#timestamp",
     "access": null,
     "description": null,
-    "lineNumber": 135,
+    "lineNumber": 141,
     "undocument": true,
     "type": {
       "types": [
@@ -355,7 +355,7 @@
     "examples": [
       "new $LogProvider().$setLevel('debug');"
     ],
-    "lineNumber": 147,
+    "lineNumber": 153,
     "since": "0.0.2",
     "params": [
       {
@@ -385,7 +385,7 @@
     "longname": "src/services/$LogProvider.js~$LogProvider#level",
     "access": null,
     "description": null,
-    "lineNumber": 149,
+    "lineNumber": 155,
     "undocument": true,
     "type": {
       "types": [
@@ -405,7 +405,7 @@
     "examples": [
       "new $LogProvider().$setTimestamp(false);"
     ],
-    "lineNumber": 163,
+    "lineNumber": 169,
     "since": "0.0.2",
     "params": [
       {
@@ -435,7 +435,7 @@
     "longname": "src/services/$LogProvider.js~$LogProvider#silent",
     "access": null,
     "description": null,
-    "lineNumber": 164,
+    "lineNumber": 170,
     "undocument": true,
     "type": {
       "types": [
@@ -455,7 +455,7 @@
     "examples": [
       "new $LogProvider.bold('test');"
     ],
-    "lineNumber": 175,
+    "lineNumber": 181,
     "since": "0.0.2",
     "params": [
       {
@@ -483,7 +483,7 @@
     "examples": [
       "new $LogProvider.info('test');"
     ],
-    "lineNumber": 186,
+    "lineNumber": 192,
     "since": "0.0.2",
     "params": [
       {
@@ -511,7 +511,7 @@
     "examples": [
       "new $LogProvider.debug('test');"
     ],
-    "lineNumber": 200,
+    "lineNumber": 206,
     "since": "0.0.2",
     "params": [
       {
@@ -539,7 +539,7 @@
     "examples": [
       "new $LogProvider.warn('test');"
     ],
-    "lineNumber": 214,
+    "lineNumber": 220,
     "since": "0.0.2",
     "params": [
       {
@@ -567,7 +567,7 @@
     "examples": [
       "new $LogProvider.error('test');"
     ],
-    "lineNumber": 228,
+    "lineNumber": 234,
     "since": "0.0.2",
     "params": [
       {
@@ -595,7 +595,7 @@
     "examples": [
       "new $LogProvider.$shell();"
     ],
-    "lineNumber": 245,
+    "lineNumber": 251,
     "since": "0.0.2",
     "params": [],
     "return": {

@@ -15,10 +15,6 @@
         "comma-spacing": false,
         "consistent-return": false,
         "eol-last": false,
-        "global-strict": [
-            2,
-            "always"
-        ],
         "indent": 4,
         "key-spacing": false,
         "new-cap": false,
@@ -30,7 +26,11 @@
         "no-underscore-dangle": false,
         "no-use-before-define": false,
         "no-unused-expressions": false,
-        "quotes": [ 1, "single" ]
+        "quotes": [ 1, "single" ],
+        "strict": [
+            2,
+            "never"
+        ]
     },
     "emcaFeatures": {
         "arrowFunctions": true,
