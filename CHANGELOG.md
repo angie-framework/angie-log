@@ -2,13 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-#### [0.9.2] - 2015-08-23
-##### Added/Changed/Removed
-- Update README
-- Remove the `Connect` package from dependencies
+#### [0.9.4] - 2015-08-23
+##### Fixed
+- Fixed versioning inconsistencies from 0.9.3.
+
+#### [0.9.3] - 2015-08-23
+##### Removed/Added
 - Removed documentation from `.gitignore`
 - Removed unnecessary `use strict;` lines from many files.
 - Created a `dist` folder/runtime with an equivalent pre-compiled Angie Log framework.
+
+#### [0.9.2] - 2015-08-08
+##### Changed/Removed
+- Update README
+- Remove the `Connect` package from dependencies
 
 #### [0.9.1] - 2015-07-08
 ##### Fixed
