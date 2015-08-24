@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.5] - 2015-08-24
+##### Removed
+- Removed the extraneous `$shell` function from the main project file, `$LogProvider`.
+
 #### [0.9.4] - 2015-08-23
 ##### Fixed
 - Fixed versioning inconsistencies from 0.9.3.
