@@ -283,18 +283,6 @@ var $LogProvider = (function () {
             args.push('\r');
             console.error(_bold.apply(null, args));
         }
-    }, {
-        key: '$shell',
-
-        /**
-         * @desc A wrapper for REPL line starts
-         * @since 0.0.2
-         * @access private
-         * @example new $LogProvider.$shell();
-         */
-        value: function $shell() {
-            return _chalk2['default'].cyan(_bold('angie > '));
-        }
     }]);
 
     return $LogProvider;

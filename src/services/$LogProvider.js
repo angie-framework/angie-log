@@ -241,16 +241,6 @@ class $LogProvider {
         args.push('\r');
         console.error(bold.apply(null, args));
     }
-
-    /**
-     * @desc A wrapper for REPL line starts
-     * @since 0.0.2
-     * @access private
-     * @example new $LogProvider.$shell();
-     */
-    static $shell() {
-        return chalk.cyan(bold('angie > '));
-    }
 }
 
 // Helper function to drop hard returns in between arguments

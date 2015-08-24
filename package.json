@@ -1,12 +1,12 @@
 {
   "name": "angie-log",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
   "bin": {
-      "angie-log": "bin/angie-log",
-      "angie-log-dist": "bin/angie-log-dist"
+    "angie-log": "bin/angie-log",
+    "angie-log-dist": "bin/angie-log-dist"
   },
   "main": "dist/services/$LogProvider.js",
   "private": false,
@@ -51,7 +51,7 @@
     "istanbul-cobertura-badger": "0.0.4",
     "mocha": "2.2.4",
     "simple-mock": "0.3.0",
-    "yargs": "3.8.0"
+    "yargs": "^3.21.0"
   },
   "dependencies": {
     "babel": "^5.6.4",
