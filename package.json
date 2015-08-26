@@ -12,6 +12,7 @@
   "private": false,
   "preferGlobal": true,
   "scripts": {
+    "test": "gulp test",
     "prepublish": "gulp test",
     "postinstall": "gulp babel"
   },
