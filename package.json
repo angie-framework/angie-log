@@ -12,8 +12,8 @@
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp test",
-    "publish": "gulp"
+    "prepublish": "gulp test",
+    "postinstall": "gulp babel"
   },
   "engines": {
     "iojs": "*",
