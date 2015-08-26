@@ -93,8 +93,5 @@ gulp.task('bump', function(cb) {
 gulp.task('watch', [ 'jscs', 'mocha' ], function() {
     gulp.watch([ SRC, TEST_SRC ], [ 'mocha' ]);
 });
-gulp.task('watch:mocha', [ 'jscs', 'mocha' ], function() {
-    gulp.watch([ SRC, TEST_SRC ], [ 'mocha' ]);
-});
 gulp.task('test', [ 'jscs', 'mocha' ]);
 gulp.task('default', [ 'jscs', 'mocha', 'babel', 'esdoc' ]);
