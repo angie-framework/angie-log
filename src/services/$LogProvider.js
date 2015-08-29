@@ -305,16 +305,17 @@ class $LogProvider {
         }
 
         // Modify the output string
-        args.unshift(
-            `${this.timestamp ? `[${new Date().toString()}] ` : ''}` +
+        let message = new Array(args);
+        message.unshift(
+            `${this.$$timestamp ? `[${new Date().toString()}] ` : ''}` +
             `[${LOG_LEVELS[ level ]}]` +
-            `${this.name ? ` [${this.name}`: ''} :`
+            `${this.$$name ? ` [${this.$$name}]` : ''} :`
         );
-        args.push('\r');
-        args = args.join(' ');
+        message.push('\r');
+        message = message.join(' ');
 
         // Push a message to the Array of messages obseved
-        this.$$messages.push(args);
+        this.$$messages.push(message);
 
         // Log the message in the terminal as well unless silent
         if (this.$$silent !== true) {

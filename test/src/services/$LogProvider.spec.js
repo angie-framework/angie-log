@@ -332,7 +332,7 @@ describe('$LogProvider', function() {
         beforeEach(function() {
             mock(Object, 'observe', noop);
             mock(Date.prototype, 'toString', () => 'test');
-            logger = new Log();
+            logger = new Log('angie.log', 'test');
             mock(Log, 'debug', noop);
         });
         afterEach(() => simple.restore());
@@ -341,13 +341,13 @@ describe('$LogProvider', function() {
                 mock(Log, 'warn', noop);
             });
             it('test without name', function() {
+                logger.$$name = null;
                 expect(logger.$$logger('test')).to.be.an.object;
                 expect(Log.warn.calls[0].args[0]).to.eq(
                     '$$logger called explicitly without a valid log level'
                 );
             });
             it('test with name', function() {
-                logger.$$name = 'test';
                 expect(logger.$$logger('test')).to.be.an.object;
                 expect(Log.warn.calls[0].args[0]).to.eq(
                     `[${chalk.cyan('test')}] $$logger called explicitly ` +
