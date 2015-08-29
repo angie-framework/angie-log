@@ -2,7 +2,6 @@
 import fs from                  'fs';
 import gulp from                'gulp';
 import {argv} from              'yargs';
-import {exec} from              'child_process';
 import eslint from              'gulp-eslint';
 import jscs from                'gulp-jscs';
 import istanbul from            'gulp-istanbul';
@@ -10,9 +9,11 @@ import {Instrumenter} from      'isparta';
 import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
 import babel from               'gulp-babel';
+import esdoc from               'gulp-esdoc';
 import chalk from               'chalk';
 
-const SRC = 'src/**/*.js',
+const SRC_DIR = 'src',
+    SRC = `${SRC}/**/*.js`,
     TRANSPILED_SRC = 'dist',
     TEST_SRC = 'test/src/**/*.spec.js',
     DOC_SRC = 'doc',
@@ -71,10 +72,12 @@ gulp.task('mocha', function(cb) {
     });
 });
 gulp.task('babel', function() {
-    return gulp.src(SRC).pipe(babel()).pipe(gulp.dest(TRANSPILED_SRC));
+    return gulp.src(SRC_DIR).pipe(babel({
+        comments: false
+    })).pipe(gulp.dest(TRANSPILED_SRC));
 });
 gulp.task('esdoc', function(cb) {
-    exec('esdoc -c esdoc.json', cb);
+    gulp.src(SRC_DIR).pipe(esdoc({ destination: DOC_SRC }));
 });
 gulp.task('bump', function(cb) {
     const version = argv.version,
