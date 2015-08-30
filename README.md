@@ -21,21 +21,27 @@ import {default as Log} from 'angie-log';
 
 // Call a new logger with defaults
 let logger = new Log({
-        outfile:    'log.log',
-        file:       'log.log',
-        name:       'test',
-        timestamp:  true,
-        level:      'debug',
-        silent:     false
+        outfile:    'log.log',              // Set the outfile
+        file:       'log.log',              // Equivalent to `outfile`
+        name:       'test',                 // Set the name of the logger
+        timestamp:  true,                   // Controls whether the logfile output has a timestamp
+        level:      'debug',                // Sets a single log level
+        levels:     [ 'info', 'debug' ],    // Sets many available log levels
+        logLevel:   'debug',                // Equivalent to `level`
+        logLevels:  [ 'info', 'debug' ],    // Equivalent to `levels`
+        silent:     false                   // Controls whether the log instance should output into the terminal as well
     }),
     err = new Log('log.log', 'test', true, 'error', false);
 
-// Output to log.log
+// Call the loggers with the string "test"
 logger.info('test');
 err.error('test');
 
 // $setOutfile to change the output file
 log.$setOutfile(`${process.cwd()}/angie.log`);
+
+// $setName to change the name of the logger and what is logged in the outfile
+log.$setOutfile('test');
 
 // $setTimestamp to toggle timestamps in the log output
 log.$setTimestamp(true);
@@ -55,13 +61,11 @@ Log.error('test');
 
 ### About
 Angie Log is designed as an extremely lightweight logging utility for NodeJS which will:
-    * Prettify the terminal output using the [Chalk](https://www.npmjs.com/package/chalk "Chalk") package
-    * Provide utilities for printing useful and informative terminal output
-    * Create asynchronous, non-blocking log files to maintain said useful and informative terminal output based on well-defined JS log levels
+* Prettify the terminal output using the [Chalk](https://www.npmjs.com/package/chalk "Chalk") package
+* Provide utilities for printing useful and informative terminal output
+* Create asynchronously written, non-blocking log files to maintain said useful and informative output based on well-defined JS log levels
 
-
-- method arguments and their meanings
-- note about calling a level outside of it's type
+For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
 ### Angie
-Please see the [site](http://benderthecrime.github.io/angie/#/about) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md) for an up to date list of changes.
+Please see the [site](http://benderthecrime.github.io/angie/) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
