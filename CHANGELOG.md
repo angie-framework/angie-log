@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.7] - 2015-08-25
+##### Added/Fixed
+- Added the name argument as a **passed argument** to the $LogProvider constructor
+- Made class methods for specific log methods
+- Validate instantiated log call against declared log level
+- Added the ability to set many log levels
+- Made all directory references relative to `process.cwd()`
+- Added additional documentation
+- Fixed/Added tests
+- Updated README
+
 #### [0.9.6] - 2015-08-25
 ##### Changed/Removed
 - Removed documentation and distribution files

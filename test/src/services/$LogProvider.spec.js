@@ -1,214 +1,405 @@
 // System Modules
 import fs from                  'fs';
-import chalk from               'chalk';
+import chalk, {bold} from       'chalk';
 
 // Test Modules
-import {expect} from            'chai';
+import {expect, assert} from    'chai';
 import simple, {mock} from      'simple-mock';
 
 // Angie Log Modules
 import {default as Log} from    '../../../src/services/$LogProvider';
 
-const p = process,
-      bold = chalk.bold;
+const CWD = process.cwd();
 
 describe('$LogProvider', function() {
     const noop = () => undefined;
 
     describe('constructor', function() {
+        let observeMock;
+
         beforeEach(function() {
-            mock(Object, 'observe', noop);
+            observeMock = mock(Object, 'observe', noop);
         });
         afterEach(() => simple.restore());
         it('test contructor object arguments', function() {
-            let log = new Log({
-                outfile: 'test',
+            let logger = new Log({
+                outfile: '/test',
+                name: 'test',
                 timestamp: false,
                 level: 'info',
-                silent: true
+                silent: true,
+                messages: [ 'test' ]
             });
-            expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
+            expect(Object.observe.calls[0].args[0]).to.deep.eq([ 'test' ]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(log.outfile).to.eq('test');
-            expect(log.timestamp).to.be.false;
-            expect(log.level).to.eq('INFO');
-            expect(log.silent).to.be.true;
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
+            expect(logger.$$name).to.eq('test');
+            expect(logger.$$timestamp).to.be.false;
+            expect(logger.$$level).to.deep.eq(new Set('INFO'));
+            expect(logger.$$silent).to.be.true;
+            expect(logger.$$messages).to.deep.eq([ 'test' ]);
+
+            expect(logger.$$initialLevel).to.deep.eq([ 'INFO' ]);
         });
         it('test constructor object arguments alt names', function() {
-            let log = new Log({
-                file: 'test',
-                timestamp: false,
-                logLevel: 'info',
-                silent: true
+            let logger = new Log({
+                file: '/test',
+                logLevel: 'info'
             });
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(log.outfile).to.eq('test');
-            expect(log.timestamp).to.be.false;
-            expect(log.level).to.eq('INFO');
-            expect(log.silent).to.be.true;
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
+            expect(logger.$$level).to.deep.eq(new Set('INFO'));
+
+            expect(logger.$$initialLevel).to.deep.eq([ 'INFO' ]);
+
+            logger = new Log({
+                file: 'test',
+                levels: [ 'info', 'debug' ]
+            });
+
+            assert(logger.$$level.has('INFO'));
+            assert(logger.$$level.has('DEBUG'));
+
+            expect(logger.$$initialLevel).to.deep.eq([ 'INFO', 'DEBUG' ]);
+
+            logger = new Log({
+                file: 'test',
+                logLevels: [ 'info', 'debug' ]
+            });
+
+            assert(logger.$$level.has('INFO'));
+            assert(logger.$$level.has('DEBUG'));
         });
         it('test constructor arguments', function() {
-            let log = new Log('test', false, 'info', true);
-            expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
+            let logger = new Log('test', 'test', false, 'info', true, [ 'test' ]);
+            expect(Object.observe.calls[0].args[0]).to.deep.eq([ 'test' ]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(log.outfile).to.eq('test');
-            expect(log.timestamp).to.be.false;
-            expect(log.level).to.eq('INFO');
-            expect(log.silent).to.be.true;
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
+            expect(logger.$$name).to.eq('test');
+            expect(logger.$$timestamp).to.be.false;
+            expect(logger.$$level).to.deep.eq(new Set('INFO'));
+            expect(logger.$$silent).to.be.true;
+            expect(logger.$$messages).to.deep.eq([ 'test' ]);
+
+            expect(logger.$$initialLevel).to.deep.eq([ 'INFO' ]);
         });
         it('test defaults', function() {
-            let log = new Log();
+            let logger = new Log();
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(log.outfile).to.eq(`${p.cwd()}/angie.log`);
-            expect(log.timestamp).to.be.true;
-            expect(log.level).to.eq('DEBUG');
-            expect(log.silent).to.be.false;
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
+            expect(logger.$$name).to.be.null;
+            expect(logger.$$timestamp).to.be.true;
+            expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
+            expect(logger.$$silent).to.be.false;
+            expect(logger.$$messages).to.deep.eq([]);
 
-            log = new Log({});
+            expect(logger.$$initialLevel).to.deep.eq([ 'DEBUG' ]);
+
+            logger = new Log({});
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(log.outfile).to.eq(`${p.cwd()}/angie.log`);
-            expect(log.timestamp).to.be.true;
-            expect(log.level).to.eq('DEBUG');
-            expect(log.silent).to.be.false;
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
+            expect(logger.$$timestamp).to.be.true;
+            expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
+            expect(logger.$$silent).to.be.false;
+            expect(logger.$$messages).to.deep.eq([]);
+
+            expect(logger.$$initialLevel).to.deep.eq([ 'DEBUG' ]);
         });
-        it('test invalid log level', function() {
-            expect(new Log({ level: 'test' }).level).to.eq('DEBUG');
+        describe('test invalid log levels', function() {
+            it('test one', function() {
+                expect(
+                    new Log({ level: 'test' }).$$level
+                ).to.deep.eq(new Set('DEBUG'));
+            });
+            it('test many', function() {
+                expect(
+                    new Log({ levels: [ 'test', 'nottest' ] }).$$level
+                ).to.deep.eq(new Set('DEBUG'));
+            });
         });
         describe('Observer calls', function() {
-            let log;
+            let logger;
 
             beforeEach(function() {
                 simple.restore();
-                log = new Log({});
+                mock(Object, 'observe', function(_, fn) {
+                    fn();
+                });
                 mock(Date.prototype, 'toString', () => 'test');
-                mock(Log, 'debug', noop);
-                mock(Log, 'error', noop);
                 mock(fs, 'appendFile', noop);
             });
-            it('test Observer called with message', function(cb) {
-                log.logger('test');
-                setTimeout(function() {
-                    expect(fs.appendFile.calls[0].args).to.deep.eq(
-                        [ `${p.cwd()}/angie.log`, '[test] DEBUG : test\n' ]
-                    );
-                    cb();
-                }, 1000);
+            it('test Observer called with message', function() {
+                logger = new Log({
+                    messages: [ 'test' ]
+                });
+                expect(fs.appendFile.calls[0].args).to.deep.eq(
+                    [ `${CWD}/angie.log`, 'test\n' ]
+                );
+                expect(logger.$$messages.length).to.eq(0);
             });
-            it('test Observer called with message \\r\\n', function(cb) {
-                log.logger('test\r');
-                setTimeout(function() {
-                    expect(fs.appendFile.calls[0].args).to.deep.eq(
-                        [ `${p.cwd()}/angie.log`, '[test] DEBUG : test\r' ]
-                    );
-                    cb();
-                }, 100);
+            it('test Observer called with message \\r\\n', function() {
+                logger = new Log({
+                    messages: [ 'test\r' ]
+                });
+                expect(fs.appendFile.calls[0].args).to.deep.eq(
+                    [ `${CWD}/angie.log`, 'test\r' ]
+                );
+                expect(logger.$$messages.length).to.eq(0);
             });
         });
     });
-    describe('logger', function() {
-        let log;
+    describe('instance log methods', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+            mock(logger, '$$filter', noop);
+        });
+        it('error', function() {
+            logger.error('test', 'test');
+            expect(
+                logger.$$filter.calls[0].args
+            ).to.deep.eq([ 'error', 'test', 'test' ]);
+        });
+        it('warn', function() {
+            logger.warn('test', 'test');
+            expect(
+                logger.$$filter.calls[0].args
+            ).to.deep.eq([ 'warn', 'test', 'test' ]);
+        });
+        it('debug', function() {
+            logger.debug('test', 'test');
+            expect(
+                logger.$$filter.calls[0].args
+            ).to.deep.eq([ 'debug', 'test', 'test' ]);
+        });
+        it('info', function() {
+            logger.info('test', 'test');
+            expect(
+                logger.$$filter.calls[0].args
+            ).to.deep.eq([ 'info', 'test', 'test' ]);
+        });
+    });
+    describe('$setOutfile', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            logger.$$outfile = '';
+            expect(logger.$setOutfile()).to.be.an.object;
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
+        });
+        it('test called with an argument', function() {
+            logger.$$outfile = '';
+            expect(logger.$setOutfile('test')).to.be.an.object;
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
+        });
+    });
+    describe('$setName', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            expect(logger.$setName()).to.be.an.object;
+            expect(logger.$$name).to.be.null;
+        });
+        it('test called with an argument', function() {
+            expect(logger.$setName('test')).to.be.an.object;
+            expect(logger.$$name).to.eq('test');
+        });
+    });
+    describe('$setTimestamp', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            logger.$$timestamp = '';
+            expect(logger.$setTimestamp()).to.be.an.object;
+            expect(logger.$$timestamp).to.be.true;
+        });
+        it('test called with an argument', function() {
+            logger.$$timestamp = '';
+            expect(logger.$setTimestamp(false)).to.be.an.object;
+            expect(logger.$$timestamp).to.be.false;
+        });
+    });
+    describe('$setLevel', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            logger.$$level = '';
+            expect(logger.$setLevel()).to.be.an.object;
+            expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
+        });
+        it('test called with a bad argument', function() {
+            logger.$$level = '';
+            expect(logger.$setLevel('test')).to.be.an.object;
+            expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
+        });
+        it('test called with a good argument', function() {
+            logger.$$level = '';
+            expect(logger.$setLevel('info')).to.be.an.object;
+            expect(logger.$$level).to.deep.eq(new Set('INFO'));
+        });
+    });
+    describe('$setLevels', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            logger.$$level = '';
+            expect(logger.$setLevels()).to.be.an.object;
+            expect(logger.$$level).to.eq('');
+        });
+        it('test called with a bad argument', function() {
+            logger.$$level = '';
+
+            expect(logger.$setLevels('debug')).to.be.an.object;
+            expect(logger.$$level).to.eq('');
+
+            expect(logger.$setLevels([])).to.be.an.object;
+            expect(logger.$$level).to.eq('');
+        });
+        it('test called with a good argument', function() {
+            logger.$$level = '';
+            expect(logger.$setLevels([ 'info', 'debug' ])).to.be.an.object;
+            expect(logger.$$level).to.deep.eq(new Set('INFO', 'DEBUG'));
+        });
+    });
+    describe('$setSilent', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+        });
+        it('test called without an argument', function() {
+            logger.$$silent = '';
+            expect(logger.$setSilent()).to.be.an.object;
+            expect(logger.$$silent).to.be.false;
+        });
+        it('test called with an argument', function() {
+            logger.$$silent = '';
+            expect(logger.$setSilent(true)).to.be.an.object;
+            expect(logger.$$silent).to.be.true;
+        });
+    });
+    describe('$$filter', function() {
+        let logger;
+
+        beforeEach(function() {
+            logger = new Log();
+            mock(logger, '$$logger', noop);
+        });
+        it('test $$filter called with no level', function() {
+            expect(logger.$$filter()).to.be.an.object;
+            expect(logger.$$logger).to.not.have.been.called;
+        });
+        it('test $$filter called with invalid level', function() {
+            expect(logger.$$filter('test')).to.be.an.object;
+            expect(logger.$$logger).to.not.have.been.called;
+        });
+        describe('test $$filter called with valid level', function() {
+            it('test default levels', function() {
+                expect(logger.$$filter('debug', 'test')).to.be.an.object;
+                expect(
+                    logger.$$logger.calls[0].args
+                ).to.deep.eq([ 'debug', 'test' ]);
+            });
+            it('test custom levels', function() {
+                logger.$setLevel('info');
+                expect(logger.$$filter('info', 'test')).to.be.an.object;
+                expect(
+                    logger.$$logger.calls[0].args
+                ).to.deep.eq([ 'info', 'test' ]);
+            });
+        });
+    });
+    describe('$$logger', function() {
+        let logger;
 
         beforeEach(function() {
             mock(Object, 'observe', noop);
             mock(Date.prototype, 'toString', () => 'test');
-            log = new Log();
+            logger = new Log('angie.log', 'test');
             mock(Log, 'debug', noop);
         });
         afterEach(() => simple.restore());
+        describe('test no specified log level', function() {
+            beforeEach(function() {
+                mock(Log, 'warn', noop);
+            });
+            it('test without name', function() {
+                logger.$$name = null;
+                expect(logger.$$logger('test')).to.be.an.object;
+                expect(Log.warn.calls[0].args[0]).to.eq(
+                    '$$logger called explicitly without a valid log level'
+                );
+            });
+            it('test with name', function() {
+                expect(logger.$$logger('test')).to.be.an.object;
+                expect(Log.warn.calls[0].args[0]).to.eq(
+                    `[${chalk.cyan('test')}] $$logger called explicitly ` +
+                    'without a valid log level'
+                );
+            });
+        });
         it('test with timestamp', function() {
-            expect(log.logger('test')).to.be.an.object;
-            expect(Log.debug.calls[0].args[0]).to.eq('test');
+            expect(logger.$$logger('debug', 'test')).to.be.an.object;
+            expect(logger.$$messages.length).to.eq(1);
+            expect(logger.$$messages[0]).to.eq(
+                '[test] [DEBUG] [test] : test\r'
+            );
+            expect(Log.debug.calls[0].args[0]).to.deep.eq([ 'test' ]);
         });
         it('test without timestamp', function() {
-            log.$setTimestamp(false);
-            expect(log.logger('test')).to.be.an.object;
-            expect(Log.debug.calls[0].args[0]).to.eq('test');
+            logger.$setTimestamp(false);
+            expect(logger.$$logger('debug', 'test')).to.be.an.object;
+            expect(logger.$$messages.length).to.eq(1);
+            expect(logger.$$messages[0]).to.eq(
+                '[DEBUG] [test] : test\r'
+            );
+            expect(Log.debug.calls[0].args[0]).to.deep.eq([ 'test' ]);
         });
         it('test silent', function() {
-            log.$setSilent(true);
-            expect(log.logger('test')).to.be.an.object;
+            logger.$setSilent(true);
+            expect(logger.$$logger('debug', 'test')).to.be.an.object;
+            expect(logger.$$messages.length).to.eq(1);
+            expect(logger.$$messages[0]).to.eq(
+                '[test] [DEBUG] [test] : test\r'
+            );
             expect(Log.debug).to.not.have.been.called;
         });
     });
-    describe('$setOutfile', function() {
-        let log;
+    describe('$$resetLevels', function() {
+        let logger;
 
         beforeEach(function() {
-            log = new Log();
+            logger = new Log();
+            logger.$$initialLevel = 'test';
+            mock(logger, '$setLevels', noop);
         });
-        it('test called without an argument', function() {
-            log.outfile = '';
-            expect(log.$setOutfile()).to.be.an.object;
-            expect(log.outfile).to.eq(`${p.cwd()}/angie.log`);
-        });
-        it('test called with an argument', function() {
-            log.outfile = '';
-            expect(log.$setOutfile('test')).to.be.an.object;
-            expect(log.outfile).to.eq('test');
-        });
-    });
-    describe('$setTimestamp', function() {
-        let log;
-
-        beforeEach(function() {
-            log = new Log();
-        });
-        it('test called without an argument', function() {
-            log.timestamp = '';
-            expect(log.$setTimestamp()).to.be.an.object;
-            expect(log.timestamp).to.be.true;
-        });
-        it('test called with an argument', function() {
-            log.timestamp = '';
-            expect(log.$setTimestamp(false)).to.be.an.object;
-            expect(log.timestamp).to.be.false;
-        });
-    });
-    describe('$setLevel', function() {
-        let log;
-
-        beforeEach(function() {
-            log = new Log();
-        });
-        it('test called without an argument', function() {
-            log.level = '';
-            expect(log.$setLevel()).to.be.an.object;
-            expect(log.level).to.eq('DEBUG');
-        });
-        it('test called with a bad argument', function() {
-            log.level = '';
-            expect(log.$setLevel('test')).to.be.an.object;
-            expect(log.level).to.eq('DEBUG');
-        });
-        it('test called with a good argument', function() {
-            log.level = '';
-            expect(log.$setLevel('info')).to.be.an.object;
-            expect(log.level).to.eq('INFO');
-        });
-    });
-    describe('$setSilent', function() {
-        let log;
-
-        beforeEach(function() {
-            log = new Log();
-        });
-        it('test called without an argument', function() {
-            log.silent = '';
-            expect(log.$setSilent()).to.be.an.object;
-            expect(log.silent).to.be.false;
-        });
-        it('test called with an argument', function() {
-            log.silent = '';
-            expect(log.$setSilent(true)).to.be.an.object;
-            expect(log.silent).to.be.true;
+        it('test reset', function() {
+            logger.$$resetLevels();
+            expect(logger.$setLevels.calls[0].args[0]).to.eq('test');
         });
     });
     describe('log methods', function() {
@@ -219,15 +410,11 @@ describe('$LogProvider', function() {
             mock(console, 'error', noop);
         });
         afterEach(() => simple.restore());
-        it('bold', function() {
-            Log.bold('test', 'test');
-            expect(console.log.calls[0].args[0]).to.eq(bold('test', 'test'));
-        });
         it('info', function() {
             Log.info('test\n', 'test\n');
             expect(console.log.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.green('[test] INFO :'),
+                    chalk.green('[test] [INFO] :'),
                     'test ',
                     'test ',
                     '\r'
@@ -238,7 +425,7 @@ describe('$LogProvider', function() {
             Log.debug('test\n', 'test\n');
             expect(console.log.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    '[test] DEBUG :',
+                    '[test] [DEBUG] :',
                     'test ',
                     'test ',
                     '\r'
@@ -249,7 +436,7 @@ describe('$LogProvider', function() {
             Log.warn('test\n', 'test\n');
             expect(console.warn.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.yellow('[test] WARN :'),
+                    chalk.yellow('[test] [WARN] :'),
                     'test ',
                     'test ',
                     '\r'
@@ -260,7 +447,7 @@ describe('$LogProvider', function() {
             Log.error('test\n', 'test\n');
             expect(console.error.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.red('[test] ERROR :'),
+                    chalk.red('[test] [ERROR] :'),
                     'test ',
                     'test ',
                     '\r'
@@ -271,7 +458,7 @@ describe('$LogProvider', function() {
             Log.error({ stack: 'stack' }, 'test\n');
             expect(console.error.calls[0].args[0]).to.eq(
                 bold.apply(null, [
-                    chalk.red('[test] ERROR :'),
+                    chalk.red('[test] [ERROR] :'),
                     'stack',
                     'test ',
                     '\r'

@@ -2,7 +2,6 @@
 import fs from                  'fs';
 import gulp from                'gulp';
 import {argv} from              'yargs';
-import {exec} from              'child_process';
 import eslint from              'gulp-eslint';
 import jscs from                'gulp-jscs';
 import istanbul from            'gulp-istanbul';
@@ -10,9 +9,11 @@ import {Instrumenter} from      'isparta';
 import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
 import babel from               'gulp-babel';
+import esdoc from               'gulp-esdoc';
 import chalk from               'chalk';
 
-const SRC = 'src/**/*.js',
+const SRC_DIR = 'src',
+    SRC = `${SRC}/**/*.js`,
     TRANSPILED_SRC = 'dist',
     TEST_SRC = 'test/src/**/*.spec.js',
     DOC_SRC = 'doc',
@@ -71,18 +72,24 @@ gulp.task('mocha', function(cb) {
     });
 });
 gulp.task('babel', function() {
-    return gulp.src(SRC).pipe(babel()).pipe(gulp.dest(TRANSPILED_SRC));
+    return gulp.src('src/**').pipe(babel()).pipe(gulp.dest('dist'));
 });
 gulp.task('esdoc', function(cb) {
-    exec('esdoc -c esdoc.json', cb);
+    return gulp.src(SRC_DIR).pipe(esdoc({ destination: DOC_SRC }));
 });
-gulp.task('bump', function(cb) {
+gulp.task('bump', function() {
     const version = argv.version,
         bump = (f) => fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace(
             /[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/,
             version
         ));
     if (version) {
+
+        // Verify that the version is in the CHANGELOG
+        if (fs.readFileSync('CHANGELOG.md', 'utf8').indexOf(version) === -1) {
+            throw new Error(bread('Version has no entry in CHANGELOG.md'));
+        }
+
         bump('bin/angie-log');
         bump('bin/angie-log-dist');
         bump('package.json');

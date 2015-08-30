@@ -10,27 +10,38 @@ This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It
 
 [![NPM](https://nodei.co/npm/angie-log.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-log/)
 
+
 ### Usage
 ```bash
 npm i -g angie-log
 ```
+
 ```javascript
 import {default as Log} from 'angie-log';
 
 // Call a new logger with defaults
-let log = new Log({
-    outfile:    'log.log',  // defaults to p.cwd() + '/angie.log'
-    file:       'log.log',
-    timestamp:  true,
-    level:      'debug',    // info, debug, warn, error
-    silent:     false
-});
+let logger = new Log({
+        outfile:    'log.log',              // Set the outfile
+        file:       'log.log',              // Equivalent to `outfile`
+        name:       'test',                 // Set the name of the logger
+        timestamp:  true,                   // Controls whether the logfile output has a timestamp
+        level:      'debug',                // Sets a single log level
+        levels:     [ 'info', 'debug' ],    // Sets many available log levels
+        logLevel:   'debug',                // Equivalent to `level`
+        logLevels:  [ 'info', 'debug' ],    // Equivalent to `levels`
+        silent:     false                   // Controls whether the log instance should output into the terminal as well
+    }),
+    err = new Log('log.log', 'test', true, 'error', false);
 
-// Output to log.log
-log.logger('test');
+// Call the loggers with the string "test"
+logger.info('test');
+err.error('test');
 
 // $setOutfile to change the output file
 log.$setOutfile(`${process.cwd()}/angie.log`);
+
+// $setName to change the name of the logger and what is logged in the outfile
+log.$setOutfile('test');
 
 // $setTimestamp to toggle timestamps in the log output
 log.$setTimestamp(true);
@@ -48,5 +59,13 @@ Log.warn('test');
 Log.error('test');
 ```
 
+### About
+Angie Log is designed as an extremely lightweight logging utility for NodeJS which will:
+* Prettify the terminal output using the [Chalk](https://www.npmjs.com/package/chalk "Chalk") package
+* Provide utilities for printing useful and informative terminal output
+* Create asynchronously written, non-blocking log files to maintain said useful and informative output based on well-defined JS log levels
+
+For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
+
 ### Angie
-Please see the [site](http://benderthecrime.github.io/angie/#/about) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md) for an up to date list of changes.
+Please see the [site](http://benderthecrime.github.io/angie/) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
