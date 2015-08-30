@@ -323,8 +323,9 @@ class $LogProvider {
             `[${LOG_LEVELS[ level ]}]` +
             `${this.$$name ? ` [${this.$$name}]` : ''} :`
         );
-        message.push('\r');
-        message = message.join(' ');
+
+        // Avoid space before return
+        message = `${message.join(' ')}\r`;
 
         // Push a message to the Array of messages obseved
         this.$$messages.push(message);

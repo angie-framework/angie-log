@@ -366,7 +366,7 @@ describe('$LogProvider', function() {
             expect(logger.$$logger('debug', 'test')).to.be.an.object;
             expect(logger.$$messages.length).to.eq(1);
             expect(logger.$$messages[0]).to.eq(
-                '[test] [DEBUG] [test] : test \r'
+                '[test] [DEBUG] [test] : test\r'
             );
             expect(Log.debug.calls[0].args[0]).to.deep.eq([ 'test' ]);
         });
@@ -375,7 +375,7 @@ describe('$LogProvider', function() {
             expect(logger.$$logger('debug', 'test')).to.be.an.object;
             expect(logger.$$messages.length).to.eq(1);
             expect(logger.$$messages[0]).to.eq(
-                '[DEBUG] [test] : test \r'
+                '[DEBUG] [test] : test\r'
             );
             expect(Log.debug.calls[0].args[0]).to.deep.eq([ 'test' ]);
         });
@@ -384,7 +384,7 @@ describe('$LogProvider', function() {
             expect(logger.$$logger('debug', 'test')).to.be.an.object;
             expect(logger.$$messages.length).to.eq(1);
             expect(logger.$$messages[0]).to.eq(
-                '[test] [DEBUG] [test] : test \r'
+                '[test] [DEBUG] [test] : test\r'
             );
             expect(Log.debug).to.not.have.been.called;
         });
