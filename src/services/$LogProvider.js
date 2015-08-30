@@ -5,7 +5,7 @@
  */
 
 // System Modules
-import                          'babel-core/node_modules/core-js/modules/es6.array.from';
+import                          'babel-core/polyfill';
 import fs from                  'fs';
 import chalk, {bold} from       'chalk';
 
