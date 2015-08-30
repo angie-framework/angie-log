@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.8] - 2015-08-25
+##### Fixed
+- Fixed issues with the npm postinstall script not actually addressed by 0.9.10.
+
 #### [0.9.7] - 2015-08-25
 ##### Added/Fixed
 - Added the name argument as a **passed argument** to the $LogProvider constructor
