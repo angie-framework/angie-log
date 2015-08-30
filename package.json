@@ -1,6 +1,6 @@
 {
   "name": "angie-log",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",
@@ -13,7 +13,8 @@
   "preferGlobal": true,
   "scripts": {
     "test": "gulp test",
-    "prepublish": "gulp babel"
+    "prepublish": "gulp babel",
+    "postinstall": "gulp babel"
   },
   "engines": {
     "iojs": "*",
@@ -37,16 +38,7 @@
     "url": "https://github.com/benderTheCrime/angie-log.git/issues"
   },
   "devDependencies": {
-    "babel-eslint": "^3.1.17",
     "chai": "2.3.0",
-    "esdoc": "0.2.2",
-    "gulp-esdoc": "0.0.3",
-    "gulp-eslint": "0.12.0",
-    "gulp-istanbul": "0.9.0",
-    "gulp-jscs": "1.6.0",
-    "gulp-mocha": "2.0.1",
-    "isparta": "3.0.3",
-    "istanbul-cobertura-badger": "0.0.4",
     "mocha": "2.2.4",
     "simple-mock": "0.3.0"
   },
@@ -55,8 +47,15 @@
     "babel-core": "^5.8.23",
     "chalk": "1.0.0",
     "gulp": "3.9.0",
-    "gulp-babel": "^5.1.0",
+    "gulp-babel": "^5.2.1",
     "gulp-cli": "0.2.0",
+    "gulp-esdoc": "0.0.3",
+    "gulp-eslint": "^1.0.0",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-jscs": "^2.0.0",
+    "gulp-mocha": "^2.1.3",
+    "isparta": "^3.0.4",
+    "istanbul-cobertura-badger": "0.0.4",
     "yargs": "^3.21.0"
   }
 }
