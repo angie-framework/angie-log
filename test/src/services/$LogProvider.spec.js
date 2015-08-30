@@ -1,6 +1,6 @@
 // System Modules
 import fs from                  'fs';
-import chalk from               'chalk';
+import chalk, {bold} from       'chalk';
 
 // Test Modules
 import {expect, assert} from    'chai';
@@ -9,8 +9,7 @@ import simple, {mock} from      'simple-mock';
 // Angie Log Modules
 import {default as Log} from    '../../../src/services/$LogProvider';
 
-const p = process,
-      bold = chalk.bold;
+const CWD = process.cwd();
 
 describe('$LogProvider', function() {
     const noop = () => undefined;
@@ -24,7 +23,7 @@ describe('$LogProvider', function() {
         afterEach(() => simple.restore());
         it('test contructor object arguments', function() {
             let logger = new Log({
-                outfile: 'test',
+                outfile: '/test',
                 name: 'test',
                 timestamp: false,
                 level: 'info',
@@ -34,7 +33,7 @@ describe('$LogProvider', function() {
             expect(Object.observe.calls[0].args[0]).to.deep.eq([ 'test' ]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(logger.$$outfile).to.eq('test');
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
             expect(logger.$$name).to.eq('test');
             expect(logger.$$timestamp).to.be.false;
             expect(logger.$$level).to.deep.eq(new Set('INFO'));
@@ -45,13 +44,13 @@ describe('$LogProvider', function() {
         });
         it('test constructor object arguments alt names', function() {
             let logger = new Log({
-                file: 'test',
+                file: '/test',
                 logLevel: 'info'
             });
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(logger.$$outfile).to.eq('test');
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
             expect(logger.$$level).to.deep.eq(new Set('INFO'));
 
             expect(logger.$$initialLevel).to.deep.eq([ 'INFO' ]);
@@ -79,7 +78,7 @@ describe('$LogProvider', function() {
             expect(Object.observe.calls[0].args[0]).to.deep.eq([ 'test' ]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(logger.$$outfile).to.eq('test');
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
             expect(logger.$$name).to.eq('test');
             expect(logger.$$timestamp).to.be.false;
             expect(logger.$$level).to.deep.eq(new Set('INFO'));
@@ -93,7 +92,7 @@ describe('$LogProvider', function() {
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(logger.$$outfile).to.eq(`${p.cwd()}/angie.log`);
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
             expect(logger.$$name).to.be.null;
             expect(logger.$$timestamp).to.be.true;
             expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
@@ -106,7 +105,7 @@ describe('$LogProvider', function() {
             expect(Object.observe.calls[0].args[0]).to.deep.eq([]);
             expect(Object.observe.calls[0].args[1]).to.be.a.function;
             expect(Object.observe.calls[0].args[2]).to.deep.eq([ 'add' ]);
-            expect(logger.$$outfile).to.eq(`${p.cwd()}/angie.log`);
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
             expect(logger.$$timestamp).to.be.true;
             expect(logger.$$level).to.deep.eq(new Set('DEBUG'));
             expect(logger.$$silent).to.be.false;
@@ -142,7 +141,7 @@ describe('$LogProvider', function() {
                     messages: [ 'test' ]
                 });
                 expect(fs.appendFile.calls[0].args).to.deep.eq(
-                    [ `${p.cwd()}/angie.log`, 'test\n' ]
+                    [ `${CWD}/angie.log`, 'test\n' ]
                 );
                 expect(logger.$$messages.length).to.eq(0);
             });
@@ -151,7 +150,7 @@ describe('$LogProvider', function() {
                     messages: [ 'test\r' ]
                 });
                 expect(fs.appendFile.calls[0].args).to.deep.eq(
-                    [ `${p.cwd()}/angie.log`, 'test\r' ]
+                    [ `${CWD}/angie.log`, 'test\r' ]
                 );
                 expect(logger.$$messages.length).to.eq(0);
             });
@@ -198,12 +197,12 @@ describe('$LogProvider', function() {
         it('test called without an argument', function() {
             logger.$$outfile = '';
             expect(logger.$setOutfile()).to.be.an.object;
-            expect(logger.$$outfile).to.eq(`${p.cwd()}/angie.log`);
+            expect(logger.$$outfile).to.eq(`${CWD}/angie.log`);
         });
         it('test called with an argument', function() {
             logger.$$outfile = '';
             expect(logger.$setOutfile('test')).to.be.an.object;
-            expect(logger.$$outfile).to.eq('test');
+            expect(logger.$$outfile).to.eq(`${CWD}/test`);
         });
     });
     describe('$setName', function() {

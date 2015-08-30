@@ -9,13 +9,14 @@ import                          'babel-core/node_modules/core-js/modules/es6.arr
 import fs from                  'fs';
 import chalk, {bold} from       'chalk';
 
-const LOG_LEVELS = {
+const CWD = process.cwd(),
+    LOG_LEVELS = {
         error: 'ERROR',
         warn: 'WARN',
         debug: 'DEBUG',
         info: 'INFO'
     },
-    DEFAULT_LOG_FILE = `${process.cwd()}/angie.log`;
+    DEFAULT_LOG_FILE = 'angie.log';
 
 /**
  * @desc $LogProvider is the only class in the Angie Logging module. This module
@@ -36,7 +37,7 @@ class $LogProvider {
      * @param {string} outfile.outfile [param=process.cwd() + '/angie.log'] The file
      * to which messages are logged
      * @param {string} outfile.file [param=process.cwd() + '/angie.log'] The file to
-     * which messages are logged
+     * which messages are logged. All files will be relative to process.cwd().
      * @param {string} outfile.name The name of the logger to be recorded in the
      * log file
      * @param {boolean} outfile.timestamp [param=true] Whether or not to include
@@ -75,13 +76,22 @@ class $LogProvider {
             this.$$silent,
             this.$$messages
         ] = typeof outfile === 'object' ? [
-            outfile.hasOwnProperty('outfile') || outfile.hasOwnProperty('file') ?
-                outfile.outfile || outfile.file : DEFAULT_LOG_FILE,
+            `${CWD}/${
+                outfile.hasOwnProperty('outfile') || outfile.hasOwnProperty('file') ?
+                    removeLeadingSlashes(outfile.outfile || outfile.file) :
+                        DEFAULT_LOG_FILE
+            }`,
             outfile.hasOwnProperty('name') ? outfile.name : name,
             outfile.hasOwnProperty('timestamp') ? outfile.timestamp : timestamp,
             outfile.hasOwnProperty('silent') ? outfile.silent : silent,
             outfile.hasOwnProperty('messages') ? outfile.messages : messages
-        ] : [ outfile, name, timestamp, silent, messages ];
+        ] : [
+            `${CWD}/${removeLeadingSlashes(outfile)}`,
+            name,
+            timestamp,
+            silent,
+            messages
+        ];
 
         // Check the log level and make sure it is an acceptable value
         if (typeof outfile === 'object') {
@@ -164,15 +174,16 @@ class $LogProvider {
     }
 
     /**
-     * @desc Set the file to which the logger records
+     * @desc Set the file to which the logger records. All files will be
+     * relative to `process.cwd()`.
      * @since 0.0.2
      * @param {string} o [param=process.cwd() + '/angie.log'] The file to which
-     * messages are logged
+     * messages are logged. All files will be relative to `process.cwd()`.
      * @access private
      * @example new $LogProvider().$setlogger('./angie.log');
      */
-    $setOutfile(o = DEFAULT_LOG_FILE) {
-        this.$$outfile = o;
+    $setOutfile(o = 'angie.log') {
+        this.$$outfile = `${CWD}/${removeLeadingSlashes(o)}`;
         return this;
     }
 
@@ -342,7 +353,7 @@ class $LogProvider {
      * @example new $LogProvider.error('test');
      */
     static error() {
-        let args = $$carriage(...arguments);
+        let args = carriage(...arguments);
         if (args && args[0].stack) {
             args[0] = args[0].stack;
         }
@@ -360,7 +371,7 @@ class $LogProvider {
      * @example new $LogProvider.warn('test');
      */
     static warn() {
-        let args = $$carriage(...arguments);
+        let args = carriage(...arguments);
         args.unshift(chalk.yellow(`[${new Date().toString()}] [WARN] :`));
         args.push('\r');
         console.warn(bold.apply(null, args));
@@ -374,7 +385,7 @@ class $LogProvider {
      * @example new $LogProvider.debug('test');
      */
     static debug() {
-        let args = $$carriage(...arguments);
+        let args = carriage(...arguments);
         args.unshift(`[${new Date().toString()}] [DEBUG] :`);
         args.push('\r');
         console.log(bold.apply(null, args));
@@ -388,7 +399,7 @@ class $LogProvider {
      * @example new $LogProvider.info('test');
      */
     static info() {
-        let args = $$carriage(...arguments);
+        let args = carriage(...arguments);
         args.unshift(chalk.green(`[${new Date().toString()}] [INFO] :`));
         args.push('\r');
         console.log(bold.apply(null, args));
@@ -400,9 +411,18 @@ class $LogProvider {
  * @since 0.0.2
  * @access private
  */
-function $$carriage() {
+function carriage() {
     let args = Array.prototype.slice.call(arguments);
     return args.map((v) => v.replace ? v.replace(/(\r|\n)/g, ' ') : v);
+}
+
+/**
+ * @desc Helper function to remove leading argument slashes
+ * @since 0.9.7
+ * @access private
+ */
+function removeLeadingSlashes(str) {
+    return str.replace(/(^(\/))/, '');
 }
 
 export default $LogProvider;

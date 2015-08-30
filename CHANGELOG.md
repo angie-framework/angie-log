@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Made class methods for specific log methods
 - Validate instantiated log call against declared log level
 - Added the ability to set many log levels
+- Made all directory references relative to p.cwd
 - Added additional documentation
 - Fixed/Added tests
 - Updated README
