@@ -5,6 +5,7 @@
  */
 
 // System Modules
+import                          'babel-core/node_modules/core-js/modules/es6.array.from';
 import fs from                  'fs';
 import chalk, {bold} from       'chalk';
 
@@ -276,7 +277,7 @@ class $LogProvider {
 
         // Check to see that the log level of the declared logger matches that
         // of the called method
-        if (level && this.$$level.has(level.toLowerCase())) {
+        if (level && this.$$level.has(level)) {
             return this.$$logger.apply(this, arguments);
         }
         return this;

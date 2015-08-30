@@ -308,21 +308,29 @@ describe('$LogProvider', function() {
 
         beforeEach(function() {
             logger = new Log();
-            mock(logger, '$logger', noop);
+            mock(logger, '$$logger', noop);
         });
-        it('test logger called with invalid level', function() {
+        it('test $$filter called with no level', function() {
+            expect(logger.$$filter()).to.be.an.object;
+            expect(logger.$$logger).to.not.have.been.called;
+        });
+        it('test $$filter called with invalid level', function() {
             expect(logger.$$filter('test')).to.be.an.object;
             expect(logger.$$logger).to.not.have.been.called;
         });
-        describe('test logger called with valid level', function() {
+        describe('test $$filter called with valid level', function() {
             it('test default levels', function() {
                 expect(logger.$$filter('debug', 'test')).to.be.an.object;
-                expect(logger.$$logger).to.not.have.been.called;
+                expect(
+                    logger.$$logger.calls[0].args
+                ).to.deep.eq([ 'debug', 'test' ]);
             });
             it('test custom levels', function() {
-                logger.$$level = new Set('INFO', 'DEBUG');
-                expect(logger.$$filter('debug', 'test')).to.be.an.object;
-                expect(logger.$$logger).to.not.have.been.called;
+                logger.$setLevel('info');
+                expect(logger.$$filter('info', 'test')).to.be.an.object;
+                expect(
+                    logger.$$logger.calls[0].args
+                ).to.deep.eq([ 'info', 'test' ]);
             });
         });
     });
