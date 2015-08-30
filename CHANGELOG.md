@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.10] - 2015-08-30
+##### Removed
+- Removed `Array.from` references because they do not play nicely with Babel.
+
 #### [0.9.9] - 2015-08-30
-##### Fixed
+##### Fixed/Removed
 - Removed npm prepublish script
 - Modified npm postinstall script to use babel from the cli
 - Moved some npm dependencies to devDependencies

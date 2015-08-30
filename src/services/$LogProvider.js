@@ -5,7 +5,6 @@
  */
 
 // System Modules
-import                          'babel-core/polyfill';
 import fs from                  'fs';
 import chalk, {bold} from       'chalk';
 
@@ -113,7 +112,7 @@ class $LogProvider {
         this.$setLevels(level);
 
         // Backup the original level type
-        this.$$initialLevel = Array.from(this.$$level);
+        this.$$initialLevel = [ ...this.$$level ];
 
         // Observe the messages array, logging a record each time a message is
         // added
@@ -305,7 +304,7 @@ class $LogProvider {
      * @example new $LogProvider(output.log, true, 'DEBUG', false).logger('test');
      */
     $$logger() {
-        let args = Array.from(arguments),
+        let args = Array.prototype.slice.call(arguments),
             level = args.shift();
 
         if (!LOG_LEVELS.hasOwnProperty(level)) {
