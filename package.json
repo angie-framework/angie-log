@@ -13,7 +13,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "gulp test",
-    "postinstall": "babel src --out-dir dist"
+    "postinstall": "babel src --out-dir dist --comments false"
   },
   "engines": {
     "iojs": "*",

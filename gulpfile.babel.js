@@ -72,7 +72,9 @@ gulp.task('mocha', function(cb) {
     });
 });
 gulp.task('babel', function() {
-    return gulp.src('src/**').pipe(babel()).pipe(gulp.dest('dist'));
+    return gulp.src('src/**').pipe(babel({
+        comments: false
+    })).pipe(gulp.dest('dist'));
 });
 gulp.task('esdoc', function() {
     return gulp.src(SRC_DIR).pipe(esdoc({ destination: DOC_SRC }));
