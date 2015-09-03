@@ -1,6 +1,6 @@
 {
   "name": "angie-log",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone terminal and outfile logger designed for the Angie MVC",
   "license": "MIT",

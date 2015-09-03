@@ -413,7 +413,7 @@ class $LogProvider {
  */
 function carriage() {
     let args = Array.prototype.slice.call(arguments);
-    return args.map((v) => v.replace ? v.replace(/(\r|\n)/g, ' ') : v);
+    return args.map((v) => v && v.replace ? v.replace(/(\r|\n)/g, ' ') : v);
 }
 
 /**
