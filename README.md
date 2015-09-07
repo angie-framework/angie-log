@@ -1,7 +1,5 @@
 ## Angie Log
 
-This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie MVC](https://github.com/benderTheCrime/angie).
-
 ![build status](https://travis-ci.org/benderTheCrime/angie-log.svg?branch=master "build status")
 ![iojs support](https://img.shields.io/badge/iojs-1.7.1+-brightgreen.svg "iojs support")
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
@@ -10,6 +8,11 @@ This is a very slim terminal and outfile logger for iojs/NodeJS ES6 projects. It
 
 [![NPM](https://nodei.co/npm/angie-log.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-log/)
 
+### About
+Angie Log is designed as an extremely lightweight logging utility for NodeJS which will:
+* Prettify the terminal output using the [Chalk](https://www.npmjs.com/package/chalk "Chalk") package
+* Provide utilities for printing useful and informative terminal output
+* Create asynchronously written, non-blocking log files to maintain said useful and informative output based on well-defined JS log levels
 
 ### Usage
 ```bash
@@ -59,13 +62,7 @@ Log.warn('test');
 Log.error('test');
 ```
 
-### About
-Angie Log is designed as an extremely lightweight logging utility for NodeJS which will:
-* Prettify the terminal output using the [Chalk](https://www.npmjs.com/package/chalk "Chalk") package
-* Provide utilities for printing useful and informative terminal output
-* Create asynchronously written, non-blocking log files to maintain said useful and informative output based on well-defined JS log levels
-
 For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
 ### Angie
-Please see the [site](http://benderthecrime.github.io/angie/) for news, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
+Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
