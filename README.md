@@ -1,4 +1,4 @@
-![emblem](https://rawgit.com/angie-framework/angie/master/static/images/angie.svg "emblem")
+![emblem](https://rawgit.com/angie-framework/angie-log/master/svg/angie.svg "emblem")
 
 ## Angie Log
 An extremely lightweight logging utility for NodeJS built in ES6
