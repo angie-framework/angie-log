@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.12] - 2015-09-30
+##### Changed
+- Modified README
+
 #### [0.9.11] - 2015-09-02
 ##### Removed
 - Fixed a tiny bug in the private `$$carriage` function to support Angie
