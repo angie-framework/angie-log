@@ -2,7 +2,7 @@
   "name": "angie-log",
   "version": "0.9.11",
   "author": "Joe Groseclose <@benderTheCrime>",
-  "description": "Standalone terminal and outfile logger designed for the Angie MVC",
+  "description": "An extremely lightweight logging utility for NodeJS built in ES6",
   "license": "MIT",
   "bin": {
     "angie-log": "bin/angie-log",
