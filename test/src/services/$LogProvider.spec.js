@@ -12,15 +12,13 @@ import {default as Log} from    '../../../src/services/$LogProvider';
 const CWD = process.cwd();
 
 describe('$LogProvider', function() {
-    const noop = () => undefined;
+    const noop = () => false;
 
     describe('constructor', function() {
-        let observeMock;
-
         beforeEach(function() {
-            observeMock = mock(Object, 'observe', noop);
+            mock(Object, 'observe', noop);
         });
-        afterEach(() => simple.restore());
+        afterEach(simple.restore);
         it('test contructor object arguments', function() {
             let logger = new Log({
                 outfile: '/test',
