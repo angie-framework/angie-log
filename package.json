@@ -1,6 +1,6 @@
 {
   "name": "angie-log",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "An extremely lightweight logging utility for NodeJS built in ES6",
   "license": "MIT",
