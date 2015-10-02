@@ -6,7 +6,7 @@
 
 // System Modules
 import fs from                  'fs';
-import chalk, {bold} from       'chalk';
+import chalk, { bold } from     'chalk';
 
 const CWD = process.cwd(),
     LOG_LEVELS = {

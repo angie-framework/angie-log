@@ -1,15 +1,14 @@
 // System Modules
 import fs from                  'fs';
-import chalk, {bold} from       'chalk';
+import chalk, { bold } from     'chalk';
 
 // Test Modules
-import {expect, assert} from    'chai';
-import simple, {mock} from      'simple-mock';
+import { expect, assert } from  'chai';
+import simple, { mock } from    'simple-mock';
 
 // Angie Log Modules
-import {default as Log} from    '../../../src/services/$LogProvider';
-
-const CWD = process.cwd();
+const Log =                     require(`../../../${global.TEST_ENV}/services/$LogProvider`),
+    CWD = process.cwd();
 
 describe('$LogProvider', function() {
     const noop = () => false;
