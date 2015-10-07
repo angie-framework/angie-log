@@ -181,7 +181,7 @@ class $LogProvider {
      * @access private
      * @example new $LogProvider().$setlogger('./angie.log');
      */
-    $setOutfile(o = 'angie.log') {
+    $setOutfile(o = DEFAULT_LOG_FILE) {
         this.$$outfile = `${CWD}/${removeLeadingSlashes(o)}`;
         return this;
     }

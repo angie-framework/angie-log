@@ -6,12 +6,19 @@ import chalk, { bold } from     'chalk';
 import { expect, assert } from  'chai';
 import simple, { mock } from    'simple-mock';
 
+global.app = { factory };
+require.cache = {};
+
 // Angie Log Modules
 const Log =                     require(`../../../${global.TEST_ENV}/services/$LogProvider`),
     CWD = process.cwd();
 
 describe('$LogProvider', function() {
     const noop = () => false;
+
+    it('expect app to self-register', function() {
+        expect(global.app.obj).to.eq(Log);
+    });
 
     describe('constructor', function() {
         beforeEach(function() {
@@ -464,3 +471,8 @@ describe('$LogProvider', function() {
         });
     });
 });
+
+function factory(obj) {
+    console.log('FACTORY CALLED');
+    this.obj = obj;
+}
