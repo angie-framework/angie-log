@@ -8,7 +8,7 @@ An extremely lightweight logging utility for NodeJS built in ES6
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
 ![npm downloads](https://img.shields.io/npm/dm/angie-log.svg "npm downloads")
 ![build status](https://travis-ci.org/benderTheCrime/angie-log.svg?branch=master "build status")
-![code coverage](https://rawgit.com/angie-framework/angie-log/master/svg/coverage.svg "code coverage")
+[![Coverage Status](https://coveralls.io/repos/benderTheCrime/angie-log/badge.svg?branch=master&service=github)](https://coveralls.io/github/benderTheCrime/angie-log?branch=master)
 [![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-log/badge.svg)](https://doc.esdoc.org/github.com/angie-framework/angie-log/ "documentation")
 
 [![NPM](https://nodei.co/npm/angie-log.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-log/)
