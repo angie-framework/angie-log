@@ -109,6 +109,6 @@ function mochaHandler(src, coverage = '/tmp') {
         reportOpts: {
             dir: coverage
         },
-        reporters: [ 'text', 'text-summary', 'html', 'cobertura' ]
+        reporters: [ 'text', 'text-summary', 'lcov' ]
     }));
 }
