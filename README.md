@@ -23,9 +23,9 @@ Angie Log is designed as an extremely lightweight logging utility for NodeJS whi
 ```bash
 npm i -g angie-log
 ```
-
+#### If Used Standalone
 ```javascript
-import {default as Log} from 'angie-log';
+import { default as Log } from 'angie-log';
 
 // Call a new logger with defaults
 let logger = new Log({
@@ -66,6 +66,18 @@ Log.debug('test');
 Log.warn('test');
 Log.error('test');
 ```
+
+#### If Used in an Angie Application
+Include the module in the same fashion as it is above, or wherever called modules are bound:
+```javascript
+@Controller
+class Test {
+    constructor($Log) {
+        $Log.info('The log module was included in a controller');
+    }
+}
+```
+The functions available on the Angie Log module are equivalent in either context.
 
 For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/md/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/md/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/md/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
