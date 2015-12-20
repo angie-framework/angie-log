@@ -6,7 +6,7 @@
 
 // System Modules
 import fs from                  'fs';
-import chalk, {bold} from       'chalk';
+import chalk, { bold } from     'chalk';
 
 const CWD = process.cwd(),
     LOG_LEVELS = {
@@ -181,7 +181,7 @@ class $LogProvider {
      * @access private
      * @example new $LogProvider().$setlogger('./angie.log');
      */
-    $setOutfile(o = 'angie.log') {
+    $setOutfile(o = DEFAULT_LOG_FILE) {
         this.$$outfile = `${CWD}/${removeLeadingSlashes(o)}`;
         return this;
     }
@@ -423,6 +423,14 @@ function carriage() {
  */
 function removeLeadingSlashes(str) {
     return str.replace(/(^(\/))/, '');
+}
+
+// Declare the module in the Angie app space
+if (
+    typeof app === 'object' &&
+    typeof app.factory === 'function'
+) {
+    app.factory('$Log', $LogProvider);
 }
 
 export default $LogProvider;

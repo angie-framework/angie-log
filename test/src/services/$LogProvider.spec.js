@@ -1,19 +1,24 @@
-// System Modules
-import fs from                  'fs';
-import chalk, {bold} from       'chalk';
-
 // Test Modules
-import {expect, assert} from    'chai';
-import simple, {mock} from      'simple-mock';
+import { expect, assert } from      'chai';
+import simple, { mock, spy } from   'simple-mock';
+
+// System Modules
+import fs from                      'fs';
+import chalk, { bold } from         'chalk';
+
+global.app = { factory: spy() };
+require.cache = {};
 
 // Angie Log Modules
-import {default as Log} from    '../../../src/services/$LogProvider';
-
-const CWD = process.cwd();
+const Log =                         require(`../../../${global.TEST_ENV}/services/$LogProvider`),
+    CWD = process.cwd();
 
 describe('$LogProvider', function() {
     const noop = () => false;
 
+    it('expect app to self-register', function() {
+        expect(global.app.factory.calls[0].args).to.deep.eq([ '$Log', Log ]);
+    });
     describe('constructor', function() {
         beforeEach(function() {
             mock(Object, 'observe', noop);
