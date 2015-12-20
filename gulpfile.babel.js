@@ -7,7 +7,6 @@ import jscs from                'gulp-jscs';
 import istanbul from            'gulp-istanbul';
 import { Instrumenter } from    'isparta';
 import mocha from               'gulp-mocha';
-import cobertura from           'istanbul-cobertura-badger';
 import babel from               'gulp-babel';
 import esdoc from               'gulp-esdoc';
 import { bold, red } from       'chalk';
@@ -48,9 +47,6 @@ gulp.task(
     [ 'istanbul:dist' ],
     mochaHandler.bind(null, 'dist', undefined)
 );
-gulp.task('cobertura', [ 'mocha:src' ], function(cb) {
-    cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
-});
 gulp.task('babel', function() {
     return gulp.src(SRC).pipe(babel({
         comments: false
@@ -109,6 +105,6 @@ function mochaHandler(src, coverage = '/tmp') {
         reportOpts: {
             dir: coverage
         },
-        reporters: [ 'text', 'text-summary', 'html', 'cobertura' ]
+        reporters: [ 'text', 'text-summary', 'lcov' ]
     }));
 }

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### [0.10.0] - 2015-10-07
+#### Fixed
+- Allow module to properly self-register via Angie
+
 #### [0.9.12] - 2015-09-30
 ##### Changed
 - Modified README
@@ -63,8 +67,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ##### Fixed
 - Fixed imports, removed trivial files so this package can more easily be imported.
 
-## [0.9.0] - 2015-07-07
-### Added
+### [0.9.0] - 2015-07-07
+#### Added
 - Modified project to be able to be imported
 - Added ability to instantiate a custom logger (see README)
 - Added many tests

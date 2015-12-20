@@ -425,4 +425,12 @@ function removeLeadingSlashes(str) {
     return str.replace(/(^(\/))/, '');
 }
 
+// Declare the module in the Angie app space
+if (
+    typeof app === 'object' &&
+    typeof app.factory === 'function'
+) {
+    app.factory('$Log', $LogProvider);
+}
+
 export default $LogProvider;

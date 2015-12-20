@@ -8,7 +8,7 @@ An extremely lightweight logging utility for NodeJS built in ES6
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
 ![npm downloads](https://img.shields.io/npm/dm/angie-log.svg "npm downloads")
 ![build status](https://travis-ci.org/benderTheCrime/angie-log.svg?branch=master "build status")
-![code coverage](https://rawgit.com/angie-framework/angie-log/master/svg/coverage.svg "code coverage")
+[![Coverage Status](https://coveralls.io/repos/benderTheCrime/angie-log/badge.svg?branch=master&service=github)](https://coveralls.io/github/benderTheCrime/angie-log?branch=master)
 [![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-log/badge.svg)](https://doc.esdoc.org/github.com/angie-framework/angie-log/ "documentation")
 
 [![NPM](https://nodei.co/npm/angie-log.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-log/)
@@ -23,9 +23,9 @@ Angie Log is designed as an extremely lightweight logging utility for NodeJS whi
 ```bash
 npm i -g angie-log
 ```
-
+#### If Used Standalone
 ```javascript
-import {default as Log} from 'angie-log';
+import { default as Log } from 'angie-log';
 
 // Call a new logger with defaults
 let logger = new Log({
@@ -67,7 +67,19 @@ Log.warn('test');
 Log.error('test');
 ```
 
-For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
+#### If Used in an Angie Application
+Include the module in the same fashion as it is above, or wherever called modules are bound:
+```javascript
+@Controller
+class Test {
+    constructor($Log) {
+        $Log.info('The log module was included in a controller');
+    }
+}
+```
+The functions available on the Angie Log module are equivalent in either context.
+
+For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-log/blob/master/md/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-log/blob/master/md/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-log/blob/master/md/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
 ### Angie
-Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
+Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/md/CHANGELOG.md) for an up to date list of changes.

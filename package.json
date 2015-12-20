@@ -1,6 +1,6 @@
 {
   "name": "angie-log",
-  "version": "0.9.12",
+  "version": "0.10.0",
   "author": "Joe Groseclose <@benderTheCrime>",
   "description": "An extremely lightweight logging utility for NodeJS built in ES6",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "postinstall": "babel src --out-dir dist --comments false"
   },
   "engines": {
@@ -39,6 +39,7 @@
   "devDependencies": {
     "babel-eslint": "^3.1.17",
     "chai": "2.3.0",
+    "coveralls": "^2.11.6",
     "gulp": "3.9.0",
     "gulp-babel": "5.2.1",
     "gulp-cli": "0.2.0",
@@ -48,7 +49,6 @@
     "gulp-jscs": "1.6.0",
     "gulp-mocha": "2.0.1",
     "isparta": "3.0.3",
-    "istanbul-cobertura-badger": "0.0.4",
     "simple-mock": "0.3.0",
     "yargs": "^3.21.0"
   },
